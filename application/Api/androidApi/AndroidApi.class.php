@@ -12,6 +12,7 @@
 class AndroidApi extends RestController implements Api
 {
        
+       	echo "ehllo";
 
 
 }
