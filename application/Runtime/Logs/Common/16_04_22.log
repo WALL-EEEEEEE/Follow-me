@@ -1,0 +1,78 @@
+[ 2016-04-22T16:03:44+08:00 ] 127.0.0.1 /favicon.ico
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000032s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000567s ]
+ERR: 无法加载模块:Favicon
+
+[ 2016-04-22T16:25:24+08:00 ] 127.0.0.1 /TestRoute1/test/1
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000016s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000285s ]
+ERR: 无法加载模块:TestRoute1
+
+[ 2016-04-22T16:25:49+08:00 ] 127.0.0.1 /TestRoute1/test/1
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000018s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000317s ]
+ERR: 无法加载模块:TestRoute1
+
+[ 2016-04-22T16:26:03+08:00 ] 127.0.0.1 /TestRoute1/test/1
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000016s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000291s ]
+ERR: 无法加载模块:TestRoute1
+
+[ 2016-04-22T16:26:23+08:00 ] 127.0.0.1 /TestRoute1/test/1
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000029s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000451s ]
+ERR: 无法加载模块:TestRoute1
+
+[ 2016-04-22T16:27:05+08:00 ] 127.0.0.1 /TestRoute1/test/1
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000029s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000491s ]
+ERR: 无法加载模块:TestRoute1
+
+[ 2016-04-22T16:27:54+08:00 ] 127.0.0.1 /TestRoute1/test/1
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000016s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000317s ]
+ERR: 无法加载模块:TestRoute1
+
+[ 2016-04-22T16:55:27+08:00 ] 127.0.0.1 /css?family=Roboto:700
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000018s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000365s ]
+ERR: 无法加载模块:Css
+
+[ 2016-04-22T16:55:27+08:00 ] 127.0.0.1 /css?family=Roboto
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000016s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000355s ]
+ERR: 无法加载模块:Css
+
+[ 2016-04-22T20:17:35+08:00 ] 127.0.0.1 /favicon.ico
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000049s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000679s ]
+ERR: 无法加载模块:Favicon
+
+[ 2016-04-22T21:29:16+08:00 ] 127.0.0.1 /css?family=Open+Sans:400,700
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000021s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000408s ]
+ERR: 无法加载模块:Css
+
+[ 2016-04-22T23:08:31+08:00 ] 127.0.0.1 /css?family=Open+Sans:400,700
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000032s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000557s ]
+ERR: 无法加载模块:Css
+
+[ 2016-04-22T23:08:49+08:00 ] 127.0.0.1 /css?family=Open+Sans:400,700
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000016s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000303s ]
+ERR: 无法加载模块:Css
+

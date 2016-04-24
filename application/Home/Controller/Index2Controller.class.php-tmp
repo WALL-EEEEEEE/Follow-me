@@ -1,0 +1,18 @@
+<?php
+
+namespace Home\Controller;
+
+class Index2Controller extends Controller {
+
+	public function hello() {
+
+		echo "hello,thinkphp!";
+	}
+
+	public function test2() {
+
+	}
+
+}
+
+?>

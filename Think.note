@@ -1,0 +1,5 @@
+ThinkPHP中如果控制器中定义为
+    TestRoute1Controller.class.php
+
+出现系统错误
+

@@ -1,0 +1,16 @@
+<?php
+
+namespace Home\Controller;
+use Think\Controller;
+
+class TestRoute1Controller extends Controller {
+
+	public function test1() {
+
+		echo "hello";
+
+	}
+
+}
+
+?>

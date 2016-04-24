@@ -1,0 +1,33 @@
+[ 2016-04-24T12:07:59+08:00 ] 127.0.0.1 /index.php/Home/Index/index
+ERR: 无法加载控制器:Home
+
+[ 2016-04-24T12:08:40+08:00 ] 127.0.0.1 /index.php/Admin/Index/index
+ERR: 无法加载控制器:Admin
+
+[ 2016-04-24T12:09:00+08:00 ] 127.0.0.1 /index.php/Admin
+ERR: 无法加载控制器:Admin
+
+[ 2016-04-24T12:11:30+08:00 ] 127.0.0.1 /index.php/index2/index
+ERR: 非法操作:index
+
+[ 2016-04-24T13:11:05+08:00 ] 127.0.0.1 /index.php/TestModule/
+ERR: 无法加载控制器:TestModule
+
+[ 2016-04-24T13:11:55+08:00 ] 127.0.0.1 /index.php/TestModule/
+ERR: 无法加载控制器:TestModule
+
+[ 2016-04-24T13:12:06+08:00 ] 127.0.0.1 /index.php/TestModule/Index/Index
+ERR: 无法加载控制器:TestModule
+
+[ 2016-04-24T13:17:47+08:00 ] 127.0.0.1 /index.php/TestModule/Index/Index
+ERR: 无法加载控制器:TestModule
+
+[ 2016-04-24T13:17:55+08:00 ] 127.0.0.1 /index.php/TestController
+ERR: 无法加载控制器:TestController
+
+[ 2016-04-24T13:18:27+08:00 ] 127.0.0.1 /index.php/HOme
+ERR: 无法加载控制器:HOme
+
+[ 2016-04-24T13:18:33+08:00 ] 127.0.0.1 /index.php/Home
+ERR: 无法加载控制器:Home
+

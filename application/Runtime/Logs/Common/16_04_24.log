@@ -1,0 +1,12 @@
+[ 2016-04-24T10:41:38+08:00 ] 127.0.0.1 /favicon.ico
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000022s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000408s ]
+ERR: 无法加载模块:Favicon
+
+[ 2016-04-24T11:42:42+08:00 ] 127.0.0.1 /index.php/Admin
+ERR: 无法加载模块:Admin
+
+[ 2016-04-24T11:42:48+08:00 ] 127.0.0.1 /index.php/admin
+ERR: 无法加载模块:Admin
+

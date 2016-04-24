@@ -1,0 +1,381 @@
+[ 2016-04-24T10:41:38+08:00 ] 127.0.0.1 /index.php/api
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000021s ]
+INFO: [ app_init ] --END-- [ RunTime:0.027126s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.012885s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.012968s ]
+ERR: 无法加载控制器:Index
+
+[ 2016-04-24T10:43:25+08:00 ] 127.0.0.1 /index.php/api/androidapi
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000023s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000401s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.000609s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000698s ]
+ERR: 无法加载控制器:Androidapi
+
+[ 2016-04-24T11:05:56+08:00 ] 127.0.0.1 /index.php/api/androidapi
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000030s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000579s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.000895s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001040s ]
+ERR: 无法加载控制器:Androidapi
+
+[ 2016-04-24T11:06:07+08:00 ] 127.0.0.1 /index.php/api/
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000016s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000324s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.000615s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000704s ]
+ERR: 无法加载控制器:Index
+
+[ 2016-04-24T11:07:27+08:00 ] 127.0.0.1 /index.php/api/
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000027s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000412s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.000695s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000796s ]
+ERR: 无法加载控制器:Index
+
+[ 2016-04-24T11:07:33+08:00 ] 127.0.0.1 /index.php/api/index/index
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000016s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000290s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.000384s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000441s ]
+ERR: 无法加载控制器:Index
+
+[ 2016-04-24T11:11:00+08:00 ] 127.0.0.1 /index.php/api
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000021s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000374s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.000617s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000702s ]
+ERR: 无法加载控制器:Index
+
+[ 2016-04-24T11:11:10+08:00 ] 127.0.0.1 /index.php/api/Index
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000017s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000288s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.000406s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000462s ]
+ERR: 无法加载控制器:Index
+
+[ 2016-04-24T11:11:15+08:00 ] 127.0.0.1 /index.php/api/index
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000017s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000294s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.000388s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000445s ]
+ERR: 无法加载控制器:Index
+
+[ 2016-04-24T11:12:45+08:00 ] 127.0.0.1 /index.php/api/index
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000017s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000312s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.000411s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000471s ]
+ERR: 无法加载控制器:Index
+
+[ 2016-04-24T11:12:50+08:00 ] 127.0.0.1 /index.php/api/
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000018s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000338s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.000437s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000504s ]
+ERR: 无法加载控制器:Index
+
+[ 2016-04-24T11:12:53+08:00 ] 127.0.0.1 /index.php/api
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000016s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000290s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.000382s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000449s ]
+ERR: 无法加载控制器:Index
+
+[ 2016-04-24T11:14:20+08:00 ] 127.0.0.1 /index.php/api
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000031s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000665s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.000754s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000864s ]
+ERR: 无法加载控制器:Index
+
+[ 2016-04-24T11:14:31+08:00 ] 127.0.0.1 /index.php/api/Index/index
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000017s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000292s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.000389s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000445s ]
+ERR: 无法加载控制器:Index
+
+[ 2016-04-24T11:19:25+08:00 ] 127.0.0.1 /index.php/api/Index/index
+ERR: 无法加载控制器:Index
+
+[ 2016-04-24T11:19:30+08:00 ] 127.0.0.1 /index.php/api/Index/index
+ERR: 无法加载控制器:Index
+
+[ 2016-04-24T11:19:44+08:00 ] 127.0.0.1 /index.php/api
+ERR: 无法加载控制器:Index
+
+[ 2016-04-24T11:19:59+08:00 ] 127.0.0.1 /index.php/api/Index/index
+ERR: 无法加载控制器:Index
+
+[ 2016-04-24T11:24:18+08:00 ] 127.0.0.1 /index.php/api
+ERR: 无法加载控制器:Index
+
+[ 2016-04-24T11:24:25+08:00 ] 127.0.0.1 /index.php/api/index/index
+ERR: 无法加载控制器:Index
+
+[ 2016-04-24T11:25:07+08:00 ] 127.0.0.1 /index.php/api/index/index
+ERR: 无法加载控制器:Index
+
+[ 2016-04-24T11:26:16+08:00 ] 127.0.0.1 /index.php/api/index/index
+ERR: 无法加载控制器:Index
+
+[ 2016-04-24T11:26:16+08:00 ] 127.0.0.1 /index.php/api/index/index
+ERR: 无法加载控制器:Index
+
+[ 2016-04-24T11:26:18+08:00 ] 127.0.0.1 /index.php/api/index/index
+ERR: 无法加载控制器:Index
+
+[ 2016-04-24T11:28:25+08:00 ] 127.0.0.1 /index.php/api/index/index
+ERR: 无法加载控制器:Index
+
+[ 2016-04-24T11:28:25+08:00 ] 127.0.0.1 /index.php/api/index/index
+ERR: 无法加载控制器:Index
+
+[ 2016-04-24T11:35:03+08:00 ] 127.0.0.1 /index.php/api
+ERR: 无法加载控制器:Api
+
+[ 2016-04-24T11:35:05+08:00 ] 127.0.0.1 /index.php/api/index/index
+ERR: 无法加载控制器:Api
+
+[ 2016-04-24T11:37:58+08:00 ] 127.0.0.1 /index.php/api/index/index
+ERR: 无法加载控制器:Api
+
+[ 2016-04-24T11:38:20+08:00 ] 127.0.0.1 /index.php/api/index/index
+ERR: 无法加载控制器:Index
+
+[ 2016-04-24T11:38:22+08:00 ] 127.0.0.1 /index.php/api/index/index
+ERR: 无法加载控制器:Index
+
+[ 2016-04-24T11:38:38+08:00 ] 127.0.0.1 /index.php/api/test
+ERR: 无法加载控制器:Test
+
+[ 2016-04-24T11:38:42+08:00 ] 127.0.0.1 /index.php/api/test/test
+ERR: 无法加载控制器:Test
+
+[ 2016-04-24T11:42:18+08:00 ] 127.0.0.1 /index.php/api/Test/test
+ERR: 无法加载控制器:Test
+
+[ 2016-04-24T11:42:54+08:00 ] 127.0.0.1 /index.php/api
+ERR: 无法加载控制器:Index
+
+[ 2016-04-24T11:43:06+08:00 ] 127.0.0.1 /index.php/api/index/index
+ERR: 无法加载控制器:Index
+
+[ 2016-04-24T11:46:16+08:00 ] 127.0.0.1 /index.php/api/index/index
+ERR: 无法加载控制器:Index
+
+[ 2016-04-24T11:46:19+08:00 ] 127.0.0.1 /index.php/api/index/index
+ERR: 无法加载控制器:Index
+
+[ 2016-04-24T11:46:20+08:00 ] 127.0.0.1 /index.php/api/index/index
+ERR: 无法加载控制器:Index
+
+[ 2016-04-24T11:46:20+08:00 ] 127.0.0.1 /index.php/api/index/index
+ERR: 无法加载控制器:Index
+
+[ 2016-04-24T11:46:28+08:00 ] 127.0.0.1 /index.php/api/index/index
+ERR: 无法加载控制器:Index
+
+[ 2016-04-24T11:46:46+08:00 ] 127.0.0.1 /index.php/api/test/test
+ERR: 无法加载控制器:Test
+
+[ 2016-04-24T11:49:33+08:00 ] 127.0.0.1 /index.php/api/test/test
+ERR: 无法加载控制器:Test
+
+[ 2016-04-24T11:51:23+08:00 ] 127.0.0.1 /index.php/api/index/index
+ERR: 无法加载控制器:Index
+
+[ 2016-04-24T11:51:49+08:00 ] 127.0.0.1 /index.php/Api/index/index
+ERR: 无法加载控制器:Index
+
+[ 2016-04-24T11:51:53+08:00 ] 127.0.0.1 /index.php/Api/index/index
+ERR: 无法加载控制器:Index
+
+[ 2016-04-24T11:51:59+08:00 ] 127.0.0.1 /index.php/Api/Index/index
+ERR: 无法加载控制器:Index
+
+[ 2016-04-24T11:52:58+08:00 ] 127.0.0.1 /index.php/api/Index/index
+ERR: 无法加载控制器:Index
+
+[ 2016-04-24T11:59:14+08:00 ] 127.0.0.1 /index.php/api/Index/index
+ERR: 无法加载控制器:Index
+
+[ 2016-04-24T11:59:18+08:00 ] 127.0.0.1 /index.php/api/Index/index
+ERR: 无法加载控制器:Index
+
+[ 2016-04-24T11:59:31+08:00 ] 127.0.0.1 /index.php/api/Index/index
+ERR: 无法加载控制器:Index
+
+[ 2016-04-24T11:59:44+08:00 ] 127.0.0.1 /index.php/Api/index/index
+ERR: 无法加载控制器:Index
+
+[ 2016-04-24T12:00:59+08:00 ] 127.0.0.1 /index.php/Api/index/index
+ERR: 无法加载控制器:Index
+
+[ 2016-04-24T12:01:00+08:00 ] 127.0.0.1 /index.php/Api/index/index
+ERR: 无法加载控制器:Index
+
+[ 2016-04-24T12:01:00+08:00 ] 127.0.0.1 /index.php/Api/index/index
+ERR: 无法加载控制器:Index
+
+[ 2016-04-24T12:01:01+08:00 ] 127.0.0.1 /index.php/Api/index/index
+ERR: 无法加载控制器:Index
+
+[ 2016-04-24T12:01:06+08:00 ] 127.0.0.1 /index.php/Api/Index
+ERR: 无法加载控制器:Index
+
+[ 2016-04-24T12:01:10+08:00 ] 127.0.0.1 /index.php/Api/Index/index
+ERR: 无法加载控制器:Index
+
+[ 2016-04-24T12:03:18+08:00 ] 127.0.0.1 /index.php/Api/Index/index
+ERR: 无法加载控制器:Index
+
+[ 2016-04-24T12:03:20+08:00 ] 127.0.0.1 /index.php/Api/Index/index
+ERR: 无法加载控制器:Index
+
+[ 2016-04-24T12:03:21+08:00 ] 127.0.0.1 /index.php/Api/Index/index
+ERR: 无法加载控制器:Index
+
+[ 2016-04-24T12:05:34+08:00 ] 127.0.0.1 /index.php/Api/Index/index
+ERR: 无法加载控制器:Index
+
+[ 2016-04-24T12:05:36+08:00 ] 127.0.0.1 /index.php/Api/Index/index
+ERR: 无法加载控制器:Index
+
+[ 2016-04-24T12:05:38+08:00 ] 127.0.0.1 /index.php/Api/Index/index
+ERR: 无法加载控制器:Index
+
+[ 2016-04-24T12:06:31+08:00 ] 127.0.0.1 /index.php/Api/Index/index
+ERR: 无法加载控制器:Index
+
+[ 2016-04-24T12:06:32+08:00 ] 127.0.0.1 /index.php/Api/Index/index
+ERR: 无法加载控制器:Index
+
+[ 2016-04-24T12:06:34+08:00 ] 127.0.0.1 /index.php/Api/Index/index
+ERR: 无法加载控制器:Index
+
+[ 2016-04-24T12:06:37+08:00 ] 127.0.0.1 /index.php/Api/Index/index
+ERR: 无法加载控制器:Index
+
+[ 2016-04-24T12:07:12+08:00 ] 127.0.0.1 /index.php/Api/Index/index
+ERR: 无法加载控制器:Index
+
+[ 2016-04-24T12:08:53+08:00 ] 127.0.0.1 /index.php/Api/index/index
+ERR: 无法加载控制器:Index
+
+[ 2016-04-24T12:09:18+08:00 ] 127.0.0.1 /index.php/APi
+ERR: 无法加载控制器:Index
+
+[ 2016-04-24T12:09:22+08:00 ] 127.0.0.1 /index.php/Api
+ERR: 无法加载控制器:Index
+
+[ 2016-04-24T12:09:33+08:00 ] 127.0.0.1 /index.php/Api/Index/index
+ERR: 无法加载控制器:Index
+
+[ 2016-04-24T12:09:41+08:00 ] 127.0.0.1 /index.php/Api/index/index
+ERR: 无法加载控制器:Index
+
+[ 2016-04-24T13:19:20+08:00 ] 127.0.0.1 /index.php?m=api
+ERR: 无法加载控制器:Index
+
+[ 2016-04-24T13:19:50+08:00 ] 127.0.0.1 /index.php?m=Api
+ERR: 无法加载控制器:Index
+
+[ 2016-04-24T14:05:21+08:00 ] 127.0.0.1 /index.php?m=Api&c=test
+ERR: 非法操作:index
+
+[ 2016-04-24T14:05:41+08:00 ] 127.0.0.1 /index.php?m=Api&c=test&action=test
+ERR: 非法操作:index
+
+[ 2016-04-24T15:45:16+08:00 ] 127.0.0.1 /index.php/APi
+ERR: 无法加载控制器:Index
+
+[ 2016-04-24T15:46:29+08:00 ] 127.0.0.1 /index.php/api
+ERR: 无法加载控制器:Index
+
+[ 2016-04-24T15:46:31+08:00 ] 127.0.0.1 /index.php/api
+ERR: 无法加载控制器:Index
+
+[ 2016-04-24T15:46:48+08:00 ] 127.0.0.1 /index.php/Api
+ERR: 无法加载控制器:Index
+
+[ 2016-04-24T15:46:58+08:00 ] 127.0.0.1 /index.php?m=Api
+ERR: 无法加载控制器:Index
+
+[ 2016-04-24T15:47:02+08:00 ] 127.0.0.1 /index.php?m=api
+ERR: 无法加载控制器:Index
+
+[ 2016-04-24T15:47:17+08:00 ] 127.0.0.1 /index.php?m=api&c=index&a=index
+ERR: 无法加载控制器:Index
+
+[ 2016-04-24T15:47:52+08:00 ] 127.0.0.1 /index.php?m=api&c=index&a=index
+ERR: 无法加载控制器:Index
+
+[ 2016-04-24T15:47:53+08:00 ] 127.0.0.1 /index.php?m=api&c=index&a=index
+ERR: 无法加载控制器:Index
+
+[ 2016-04-24T15:47:54+08:00 ] 127.0.0.1 /index.php?m=api&c=index&a=index
+ERR: 无法加载控制器:Index
+
+[ 2016-04-24T15:47:56+08:00 ] 127.0.0.1 /index.php?m=api&c=index&a=index
+ERR: 无法加载控制器:Index
+
+[ 2016-04-24T15:48:17+08:00 ] 127.0.0.1 /index.php/Api
+ERR: 无法加载控制器:Index
+
+[ 2016-04-24T16:23:51+08:00 ] 127.0.0.1 /index.php/Api/Index/rest_get_pdf
+ERR: 非法操作:rest_get_pdf
+
+[ 2016-04-24T16:36:44+08:00 ] 127.0.0.1 /index.php/Api/Index/rest_get_pdf
+ERR: 非法操作:rest_get_pdf
+
+[ 2016-04-24T16:37:04+08:00 ] 127.0.0.1 /index.php/Api/Index/read/id/1.xml
+ERR: 非法操作:read
+
+[ 2016-04-24T16:41:30+08:00 ] 127.0.0.1 /index.php/Api/Info/read/1.rss
+ERR: 非法操作:read
+
+[ 2016-04-24T16:41:50+08:00 ] 127.0.0.1 /index.php/Api/Info/read/id/1.rss
+ERR: 非法操作:read
+
+[ 2016-04-24T16:47:44+08:00 ] 127.0.0.1 /index.php/Api/Info/read/id/1.xml
+ERR: 非法操作:read
+
+[ 2016-04-24T16:52:21+08:00 ] 127.0.0.1 /index.php/Api/Info/read/id/1.xml
+ERR: 非法操作:read
+
+[ 2016-04-24T17:05:15+08:00 ] 127.0.0.1 /index.php/Api/android/get/blog/1
+ERR: 无法加载控制器:RestfulApiDispather
+
+[ 2016-04-24T17:06:48+08:00 ] 127.0.0.1 /index.php/Api/Info/read/id/1.xml
+ERR: 无法加载控制器:Info
+
