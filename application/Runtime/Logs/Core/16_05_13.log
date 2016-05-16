@@ -1,0 +1,12 @@
+[ 2016-05-13T13:36:15+08:00 ] ::1 /index.php/Core/user/register
+ERR: 参数错误或者未定义:u_name
+
+[ 2016-05-13T14:54:27+08:00 ] ::1 /index.php/Core/user/register?u_name=duanduan2&u_pwd=duanduan123&u_type=0&register_type=2&u_check_mail=2574580419@qq.com&u_check_phone=13132283239
+ERR: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ''13132283239register_type = 2 ) LIMIT 1' at line 1
+
+[ 2016-05-13T14:55:06+08:00 ] ::1 /index.php/Core/user/register?u_name=duanduan2&u_pwd=duanduan123&u_type=0&register_type=2&u_check_mail=2574580419@qq.com&u_check_phone=13132283239
+ERR: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'telenum' in 'where clause'
+
+[ 2016-05-13T14:55:42+08:00 ] ::1 /index.php/Core/user/register?u_name=duanduan2&u_pwd=duanduan123&u_type=0&register_type=2&u_check_mail=2574580419@qq.com&u_check_phone=13132283239
+ERR: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'register_type' in 'where clause'
+

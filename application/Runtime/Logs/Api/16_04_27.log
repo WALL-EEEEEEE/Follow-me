@@ -1,0 +1,60 @@
+[ 2016-04-27T10:40:24+08:00 ] ::1 /index.php/api/webchat/index/hello
+ERR: 无法加载控制器:Webchat
+
+[ 2016-04-27T10:40:32+08:00 ] ::1 /index.php/api/wechat
+ERR: 无法加载控制器:Wechat
+
+[ 2016-04-27T10:40:52+08:00 ] ::1 /index.php/api/android
+ERR: 无法加载控制器:Android
+
+[ 2016-04-27T11:02:37+08:00 ] ::1 /index.php/api/RestfulApiDispather
+ERR: 非法操作:index
+
+[ 2016-04-27T11:02:55+08:00 ] ::1 /index.php/api/RestfulApiDispather/dispath
+ERR: 非法操作:dispath
+
+[ 2016-04-27T11:03:15+08:00 ] ::1 /index.php/api/RestfulApiDispather
+ERR: 非法操作:index
+
+[ 2016-04-27T11:04:52+08:00 ] ::1 /index.php/api/web/
+ERR: 无法加载控制器:Web
+
+[ 2016-04-27T11:05:09+08:00 ] ::1 /index.php/api/android
+ERR: 无法加载控制器:Android
+
+[ 2016-04-27T11:07:15+08:00 ] ::1 /index.php/api
+ERR: 无法加载控制器:Index
+
+[ 2016-04-27T11:07:23+08:00 ] ::1 /index.php/api/Android
+ERR: 无法加载控制器:Android
+
+[ 2016-04-27T11:35:01+08:00 ] ::1 /index.php/api/android/get
+ERR: 无法加载控制器:Android
+
+[ 2016-04-27T11:35:11+08:00 ] ::1 /index.php/api/android/read
+ERR: 无法加载控制器:Android
+
+[ 2016-04-27T11:35:17+08:00 ] ::1 /index.php/api/wechat/read
+ERR: 无法加载控制器:Wechat
+
+[ 2016-04-27T11:36:25+08:00 ] ::1 /index.php/api/android/read/list
+ERR: 无法加载控制器:Index
+
+[ 2016-04-27T12:05:41+08:00 ] ::1 /index.php/api/android
+ERR: 非法操作:index
+
+[ 2016-04-27T12:12:10+08:00 ] ::1 /index.php/api/webchat/read
+ERR: 无法加载控制器:Webchat
+
+[ 2016-04-27T12:12:31+08:00 ] ::1 /index.php/api/webchat/read
+ERR: 无法加载控制器:Webchat
+
+[ 2016-04-27T12:12:31+08:00 ] ::1 /index.php/api/webchat/read
+ERR: 无法加载控制器:Webchat
+
+[ 2016-04-27T12:12:32+08:00 ] ::1 /index.php/api/webchat/read
+ERR: 无法加载控制器:Webchat
+
+[ 2016-04-27T15:35:31+08:00 ] ::1 /index.php/api/android/user/login
+ERR: 非法操作:user
+

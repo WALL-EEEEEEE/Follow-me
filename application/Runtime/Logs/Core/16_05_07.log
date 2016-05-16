@@ -1,0 +1,9 @@
+[ 2016-05-07T00:02:29+08:00 ] ::1 /index.php/Core/user/register/u_name/duanduan/u_pwd/duanduan123/u_type/0/u_check_phone/13132283239
+ERR: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'Array' in 'where clause'
+
+[ 2016-05-07T00:04:00+08:00 ] ::1 /index.php/Core/user/register/u_name/duanduan/u_pwd/duanduan123/u_type/0/u_check_phone/13132283239
+ERR: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'fm_01462550640' in 'where clause'
+
+[ 2016-05-07T00:24:47+08:00 ] ::1 /index.php/Core/user/register/u_name/duanduan/u_pwd/duanduan123/u_type/0/u_check_mail/duanqingbb@163.com
+ERR: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'expire_time' in 'field list'
+

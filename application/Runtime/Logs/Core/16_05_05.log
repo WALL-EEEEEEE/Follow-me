@@ -1,0 +1,79 @@
+[ 2016-05-05T16:51:48+08:00 ] ::1 /index.php/Core/user/mail_register_send/mail/15122312902@163.com
+ERR: File ./Resource/mail_html_template/register_validate.htmlis no Exists!
+
+[ 2016-05-05T16:54:11+08:00 ] ::1 /index.php/Core/user/mail_register_send/mail/15122312902@163.com
+ERR: File ./Resource/mail_html_template/register_validate.html
+ 			     	is no Exists!
+
+[ 2016-05-05T16:54:32+08:00 ] ::1 /index.php/Core/user/mail_register_send/mail/15122312902@163.com
+ERR: The Varible in Template numbers is not match the replacement!
+
+[ 2016-05-05T16:54:48+08:00 ] ::1 /index.php/Core/user/mail_register_send/mail/15122312902@163.com
+ERR: The Variable in Template numbers is not match the replacement!
+
+[ 2016-05-05T16:59:20+08:00 ] ::1 /index.php/Core/user/mail_register_send/mail/15122312902@163.com
+ERR: The Variable's number  in template is not match the replacement!
+
+[ 2016-05-05T17:00:18+08:00 ] ::1 /index.php/Core/user/mail_register_send/mail/15122312902@163.com
+ERR: The Variable's number  in template is not match the replacement!
+
+[ 2016-05-05T17:02:22+08:00 ] ::1 /index.php/Core/user/mail_register_send/mail/15122312902@163.com
+ERR: The Variable's number  in template is not match the replacement!
+
+[ 2016-05-05T17:05:56+08:00 ] ::1 /index.php/Core/user/mail_register_send/mail/15122312902@163.com
+ERR: The Variable's number  in template is not match the replacement!
+
+[ 2016-05-05T17:06:31+08:00 ] ::1 /index.php/Core/user/mail_register_send/mail/15122312902@163.com
+ERR: The Variable's number  in template is not match the replacement!
+
+[ 2016-05-05T17:07:42+08:00 ] ::1 /index.php/Core/user/mail_register_send/mail/15122312902@163.com
+ERR: The Variable's number  in template is not match the replacement!
+
+[ 2016-05-05T17:08:47+08:00 ] ::1 /index.php/Core/user/mail_register_send/mail/15122312902@163.com
+ERR: The Variable's number  in template is not match the replacement!
+
+[ 2016-05-05T17:13:12+08:00 ] ::1 /index.php/Core/user/mail_register_send/mail/15122312902@163.com
+ERR: The Variable's number  in template is not match the replacement!
+
+[ 2016-05-05T17:15:31+08:00 ] ::1 /index.php/Core/user/mail_register_send/mail/15122312902@163.com
+ERR: The Variable's number  in template is not match the replacement!
+
+[ 2016-05-05T17:18:25+08:00 ] ::1 /index.php/Core/user/mail_register_send/mail/15122312902@163.com
+ERR: The Variable's number  in template is not match the replacement!
+
+[ 2016-05-05T17:21:06+08:00 ] ::1 /index.php/Core/user/mail_register_send/mail/15122312902@163.com
+ERR: The Variable's number  in template is not match the replacement!
+
+[ 2016-05-05T17:22:13+08:00 ] ::1 /index.php/Core/user/mail_register_send/mail/15122312902@163.com
+ERR: The Variable's number  in template is not match the replacement!
+
+[ 2016-05-05T17:23:01+08:00 ] ::1 /index.php/Core/user/mail_register_send/mail/15122312902@163.com
+ERR: The Variable's number  in template is not match the replacement!
+
+[ 2016-05-05T17:23:52+08:00 ] ::1 /index.php/Core/user/mail_register_send/mail/15122312902@163.com
+ERR: The Variable's number  in template is not match the replacement!
+
+[ 2016-05-05T17:26:05+08:00 ] ::1 /index.php/Core/user/mail_register_send/mail/15122312902@163.com
+ERR: The Variable's number  in template is not match the replacement!
+
+[ 2016-05-05T22:21:02+08:00 ] ::1 /index.php/Core/user/mail_register_send/mail/2574580419@qq.com
+ERR: 非法操作:mail_register_send
+
+[ 2016-05-05T22:22:47+08:00 ] ::1 /index.php/Core/user/mailRegisterSend/mail/2574580419@qq.com
+ERR: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ') LIMIT 1' at line 1
+
+[ 2016-05-05T22:24:27+08:00 ] ::1 /index.php/Core/user/mailRegisterSend/mail/2574580419@qq.com
+ERR: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ') LIMIT 1' at line 1
+
+[ 2016-05-05T22:24:45+08:00 ] ::1 /index.php/Core/user/mailRegisterSend/mail/2574580419@qq.com
+ERR: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ') LIMIT 1' at line 1
+
+[ 2016-05-05T22:26:13+08:00 ] ::1 /index.php/Core/user/mailRegisterSend/mail/2574580419@qq.com
+ERR: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ') LIMIT 1' at line 1
+
+[ 2016-05-05T22:29:50+08:00 ] ::1 /index.php/Core/user/mailRegisterSend/mail/2574580419@qq.com
+ERR: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ') LIMIT 1' at line 1
+
+[ 2016-05-05T22:30:18+08:00 ] ::1 /index.php/Core/user/mailRegisterSend/mail/2574580419@qq.com
+ERR: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ') LIMIT 1' at line 1
+

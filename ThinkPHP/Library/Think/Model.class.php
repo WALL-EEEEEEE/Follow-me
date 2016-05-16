@@ -562,7 +562,7 @@ class Model {
             } else {
                 return false;
             }
-        } elseif(false === $options){ // 用于子查询 不查询只返回SQL
+        } elseif(false === $options){ // 用于子查询 不查询只返回
         	$options['fetch_sql'] = true;
         }
         // 分析表达式

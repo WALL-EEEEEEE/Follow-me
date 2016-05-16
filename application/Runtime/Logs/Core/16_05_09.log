@@ -1,0 +1,18 @@
+[ 2016-05-09T20:24:11+08:00 ] ::1 /index.php/Core/user/register/u_name/duanduan1/u_pwd/duanduan123/u_type/0/u_check_phone/13132283239/register_type/1/u_check_mail/2574580419@qq.com
+ERR: The Variable's number  in template is not match the replacement!
+
+[ 2016-05-09T20:28:00+08:00 ] ::1 /index.php/Core/user/register/u_name/duanduan1/u_pwd/duanduan123/u_type/0/u_check_phone/13132283239/register_type/1/u_check_mail/2574580419@qq.com
+ERR: The Variable's number  in template is not match the replacement!
+
+[ 2016-05-09T21:57:21+08:00 ] ::1 /index.php/Core/user/mail_register_send/mail/2574580419@qq.com
+ERR: 非法操作:mail_register_send
+
+[ 2016-05-09T22:02:50+08:00 ] ::1 /index.php/Core/user/mailRegisterSend/mail/2574580419@qq.com
+ERR: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'uid' in 'where clause'
+
+[ 2016-05-09T23:09:29+08:00 ] ::1 /index.php/Core/user/mailActivate/activate_code/9f4016408e8a6c1bddb95a015049a50c/user_id/fm_01462802152
+ERR: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'status' in 'where clause'
+
+[ 2016-05-09T23:10:20+08:00 ] ::1 /index.php/Core/user/mailActivate/activate_code/9f4016408e8a6c1bddb95a015049a50c/user_id/fm_01462802152
+ERR: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'u_id' in 'where clause'
+

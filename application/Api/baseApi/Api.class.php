@@ -9,5 +9,23 @@ namespace Api\baseApi;
 interface Api
 {
 
+     /**
+      * 返回请求结果
+      * @return string[json] [返回json结果数据]
+      */
+     public function response();
 
+    /**
+     * 接收请求
+     * @return void 
+     */
+     public function request();
+
+
+    /**
+     * 处理请求
+     * @return void  ]
+     */
+     public function process();
+     
 }

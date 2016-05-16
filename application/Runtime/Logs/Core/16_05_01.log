@@ -1,0 +1,6 @@
+[ 2016-05-01T18:20:01+08:00 ] ::1 /index.php/Core/user/messageVcode
+ERR: 参数错误或者未定义:code
+
+[ 2016-05-01T18:20:16+08:00 ] ::1 /index.php/Core/user/messageVcode/1071
+ERR: 参数错误或者未定义:code
+

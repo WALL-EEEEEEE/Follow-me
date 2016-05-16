@@ -1,0 +1,6 @@
+[ 2016-05-03T22:08:44+08:00 ] ::1 /index.php/Core/user/message_register_send/15122312902@163.com
+ERR: 非法操作:message_register_send
+
+[ 2016-05-03T22:09:27+08:00 ] ::1 /index.php/Core/user/mail_register_send/15122312902@163.com
+ERR: 参数错误或者未定义:mail
+

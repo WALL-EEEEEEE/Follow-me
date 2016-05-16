@@ -1,0 +1,39 @@
+[ 2016-05-08T18:01:47+08:00 ] ::1 /index.php/Core/user/register/u_name/duanduan/u_pwd/duanduan123/u_type/0/u_check_phone/13132283239
+ERR: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'user_alias' in 'where clause'
+
+[ 2016-05-08T18:11:20+08:00 ] ::1 /index.php/Core/user/register/u_name/duanduan/u_pwd/duanduan123/u_type/0/u_check_phone/13132283239
+ERR: SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'register_by' cannot be null
+
+[ 2016-05-08T18:13:57+08:00 ] ::1 /index.php/Core/user/register/u_name/duanduan/u_pwd/duanduan123/u_type/0/u_check_phone/13132283239
+ERR: SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'register_by' cannot be null
+
+[ 2016-05-08T18:15:02+08:00 ] ::1 /index.php/Core/user/register/u_name/duanduan/u_pwd/duanduan123/u_type/0/u_check_phone/13132283239
+ERR: SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'register_by' cannot be null
+
+[ 2016-05-08T18:16:02+08:00 ] ::1 /index.php/Core/user/register/u_name/duanduan/u_pwd/duanduan123/u_type/0/u_check_phone/13132283239
+ERR: SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'register_by' cannot be null
+
+[ 2016-05-08T18:16:31+08:00 ] ::1 /index.php/Core/user/register/u_name/duanduan/u_pwd/duanduan123/u_type/0/u_check_phone/13132283239
+ERR: SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'register_by' cannot be null
+
+[ 2016-05-08T18:17:00+08:00 ] ::1 /index.php/Core/user/register/u_name/duanduan/u_pwd/duanduan123/u_type/0/u_check_phone/13132283239
+ERR: SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'register_by' cannot be null
+
+[ 2016-05-08T18:28:52+08:00 ] ::1 /index.php/Core/user/register/u_name/duanduan/u_pwd/duanduan123/u_type/0/u_check_phone/13132283239
+ERR: Think\Model:isPhoneActivate方法不存在！
+
+[ 2016-05-08T18:32:24+08:00 ] ::1 /index.php/Core/user/register/u_name/duanduan/u_pwd/duanduan123/u_type/0/u_check_phone/13132283239
+ERR: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'register_by' in 'field list'
+
+[ 2016-05-08T20:25:45+08:00 ] ::1 /index.php/Core/user/register/u_name/duanduan/u_pwd/duanduan123/u_type/0/u_check_mail/duanqingbb@163.com
+ERR: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'register_by' in 'field list'
+
+[ 2016-05-08T20:38:54+08:00 ] ::1 /index.php/Core/user/register/u_name/duanduan1/u_pwd/duanduan123/u_type/0/u_check_phone/13132283239/register_type/2
+ERR: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'register_phone' in 'field list'
+
+[ 2016-05-08T20:40:34+08:00 ] ::1 /index.php/Core/user/register/u_name/duanduan1/u_pwd/duanduan123/u_type/0/u_check_phone/13132283239/register_type/2
+ERR: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'account_status' in 'field list'
+
+[ 2016-05-08T21:27:59+08:00 ] ::1 /index.php/Core/user/register/u_name/duanduan1/u_pwd/duanduan123/u_type/0/u_check_phone/13132283239/register_type/1/u_check_mail/2574580419@qq.com
+ERR: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'fm_01462714079' in 'where clause'
+

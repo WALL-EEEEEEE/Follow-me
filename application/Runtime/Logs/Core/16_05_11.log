@@ -1,0 +1,75 @@
+[ 2016-05-11T11:37:40+08:00 ] ::1 /Core/user/mailActivate?token=9f4016408e8a6c1bddb95a015049a50c&uid=fm_01462937741
+ERR: 参数错误或者未定义:activate_code
+
+[ 2016-05-11T11:39:24+08:00 ] ::1 /Core/user/mailActivate?activate_code=9f4016408e8a6c1bddb95a015049a50c&uid=fm_01462937741
+ERR: 参数错误或者未定义:user_id
+
+[ 2016-05-11T14:45:35+08:00 ] ::1 /index.php/Core/user/mail_register_send/mail/2574580419@qq.com
+ERR: 非法操作:mail_register_send
+
+[ 2016-05-11T14:59:04+08:00 ] ::1 /index.php/Core/user/phoneRegisterSend
+ERR: 非法操作:phoneRegisterSend
+
+[ 2016-05-11T16:58:38+08:00 ] ::1 /core/user/phoneRegisterMsgSender
+ERR: 非法操作:phoneRegisterMsgSender
+
+[ 2016-05-11T17:06:18+08:00 ] ::1 /index.php/Core/user/phoneRegisterMsgSend
+ERR: Sorry! is not supported yet!
+
+[ 2016-05-11T17:08:03+08:00 ] ::1 /index.php/Core/user/phoneRegisterMsgSend
+ERR: Sorry! ucpassis not supported yet!
+
+[ 2016-05-11T17:10:08+08:00 ] ::1 /index.php/Core/user/phoneRegisterMsgSend
+ERR: Sorry! ucpaasis not supported yet!
+
+[ 2016-05-11T17:12:11+08:00 ] ::1 /index.php/Core/user/phoneRegisterMsgSend
+ERR: Sorry! ucpaas is not supported yet!
+
+[ 2016-05-11T17:13:47+08:00 ] ::1 /index.php/Core/user/phoneRegisterMsgSend
+ERR: Sorry! ucpaas is not supported yet!
+
+[ 2016-05-11T17:20:26+08:00 ] ::1 /index.php/Core/user/phoneRegisterMsgSend
+ERR: telenum can't be null
+
+[ 2016-05-11T17:21:12+08:00 ] ::1 /index.php/Core/user/phoneRegisterMsgSend
+ERR: telenum can't be null
+
+[ 2016-05-11T17:22:10+08:00 ] ::1 /index.php/Core/user/phoneRegisterMsgSend
+ERR: telenum can't be null
+
+[ 2016-05-11T18:07:44+08:00 ] ::1 /index.php/Core/user/phoneRegisterMsgSend
+ERR: accountsid can't be null
+
+[ 2016-05-11T18:17:37+08:00 ] ::1 /index.php/Core/user/phoneRegisterMsgSend
+ERR: token can't be null
+
+[ 2016-05-11T18:18:44+08:00 ] ::1 /index.php/Core/user/phoneRegisterMsgSend
+ERR: appId can't be null
+
+[ 2016-05-11T18:20:43+08:00 ] ::1 /index.php/Core/user/phoneRegisterMsgSend
+ERR: templateId can't be null
+
+[ 2016-05-11T19:24:46+08:00 ] ::1 /index.php/Core/user/mobileactivateAccount/uid/fm_01462965479/code_from/650702
+ERR: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'follow_me.mobile_active' doesn't exist
+
+[ 2016-05-11T19:26:03+08:00 ] ::1 /index.php/Core/user/mobileactivateAccount/uid/fm_01462965479/code_from/650702
+ERR: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'status' in 'field list'
+
+[ 2016-05-11T19:26:17+08:00 ] ::1 /index.php/Core/user/mobileactivateAccount/uid/fm_01462965479/code_from/650702
+ERR: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'user_id' in 'where clause'
+
+[ 2016-05-11T19:47:31+08:00 ] ::1 /index.php/Core/user/mobileactivateAccount/code_from/650702
+ERR: 非法操作:mobileactivateAccount
+
+[ 2016-05-11T19:47:41+08:00 ] ::1 /index.php/Core/user/mobileActivateAccount/code_from/650702
+ERR: 非法操作:mobileActivateAccount
+
+[ 2016-05-11T22:53:55+08:00 ] ::1 /index.php/Core/user/mobileMsgVerify
+ERR: 参数错误或者未定义:code_from
+
+[ 2016-05-11T23:02:29+08:00 ] ::1 /index.php/Core/user/register
+ERR: 参数错误或者未定义:u_name
+
+[ 2016-05-11T23:14:07+08:00 ] ::1 /index.php/Core/user/register
+ERR: 参数错误或者未定义:u_name
+
