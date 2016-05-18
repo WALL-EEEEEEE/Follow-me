@@ -3,3 +3,7 @@ ThinkPHP中如果控制器中定义为
 
 出现系统错误
 
+@TODO
+  ThinkPHP中的union操作和join操作不支持连贯操作
+ $check_res = $user->join("mail_activate ON user.user_id = mail_activate.u_id")->where("user_alias = '".$user_alias."' and  mail_activate.account_status = 1 ")->union("select * from user INNER JOIN phone_activate ON user.user_id = phone_activate.uid where user_alias = '".$user_alias."' and phone_activate.account_status = 1")->find();
+

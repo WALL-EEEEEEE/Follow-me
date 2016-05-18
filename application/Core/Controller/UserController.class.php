@@ -70,6 +70,9 @@ class UserController extends Controller
     const MAIL_ACTIVATE_CODE_GENERATE_ERROR  = "00508";
     const MAIL_ACTIVATE_EXPIRED = "00509";
     const MAIL_ACTIVATE_STATUS_UPDATE_ERROR = "00510";
+    const MAIL_ACTIVATE_PARAMETER_ERROR ="00511";
+    
+
 
 
 
@@ -308,13 +311,15 @@ class UserController extends Controller
         $VerifyCodeStyle = array();
         $Verify = new Verify($VerifyCodeStyle);
         $Verify->entry();
+
+        return $Verify->getImage();
     }
 
     /**
      * 邮箱注册激活邮件发送
      * @return [integer]    [0为发送成功,非0为发送失败]
      */
-    public function mailRegisterSend()
+    public function mailRegisterSend($mail = "")
     {
 
         $user_id = null;
@@ -324,15 +329,13 @@ class UserController extends Controller
             return self::MAIL_ACTIVATE_SESSION_USER_NOEXIST;
         } else {
             $user_id = session("user_id");
-            //消除session数据
-            session("user_id", null);
         }
 
         //验证数据库中是否有用户信息
         $user = new UserModel();
 
         if (!$user->userExist($user_id)) {
-            return self::MAIL_ACTIVATE_USER_NOEXIST;
+            return self::MAIL_ACTIVATE_USER_NOEXIST; 
         }
 
         //验证数据库中是否有用户的邮箱激活信息
@@ -369,7 +372,9 @@ class UserController extends Controller
         }
 
         //生成激活链接
-        $activate_url  = "http://localhost/Core/user/mailActivate?token=".$genActivatedCode."&uid=".$user_id;
+
+        $activate_url  = "http://".$_SERVER["HTTP_HOST"]."/api/android/user/register_by_mail/activate?ac=".base64_encode($user_info["mail"])."&k=".$genActivatedCode;
+        $activate_url = "<a href=\"".$activate_url."\""."  target=\"_blank\">"."点击这里激活账号"."</a>";
         $info = array($user_info["user_alias"],$activate_url,date("Y年-m月-d日"));
         $mail_sender = new Mail();
         $reciever = array($acc_info["reg_mail"]);
@@ -434,7 +439,6 @@ class UserController extends Controller
         }
 
         $msg_sender = new Message();
-        exit(0);
         return $msg_sender->send($genActivatedCode, $acc_info["reg_phone"]);
 
          
@@ -450,7 +454,7 @@ class UserController extends Controller
      */
 
     
-    public function initialAccountStatus($uid)
+    private function initialAccountStatus($uid)
     {
          $user_id = $uid;
          //获取用户的邮箱账号
@@ -566,8 +570,16 @@ class UserController extends Controller
         
         $user = new UserModel();
 
-        if (!$user->userExist($uid)) {
-            return self::MAIL_ACTIVATE_USER_NOEXIST;
+        if (empty($activate_code) || empty($mailAccount)) {
+              return self::MAIL_ACTIVATE_PARAMETER_ERROR;
+        }
+
+        $user_exist = $user->field("user_id")->where("mail = '".base64_decode($mailAccount)."'")->find();
+        $uid = $user_exist["user_id"];
+ 
+
+        if (empty($uid)) {
+               return self::MAIL_ACTIVATE_USER_NOEXIST;
         }
 
         $mail_activate = M("mail_activate");
@@ -624,15 +636,9 @@ class UserController extends Controller
      */
     public function aliasExists($alias)
     {
-        $model =  M("User");
-        $check_res = $model->where("user_alias = '".$alias."'")->find();
-
-        if (!empty($check_res)) {
-            return true;
-        }
-
-
-        return false;
+        $user =  D("Core/User");
+        $check_res = $user->userNameRegistered($alias);
+        return $check_res;
     }
 
     /**
@@ -642,15 +648,10 @@ class UserController extends Controller
      */
     public function emailExists($email = '')
     {
-        $model = M('User');
-        $check_res = $model->where("mail = '".$email."'")->find();
+        $user = new UserModel();
+        $check_res = $user->mailRegistered($email);
 
-        if (!empty($check_res)) {
-            return true;
-        }
-
-
-        return false;
+        return $check_res;
     }
 
 
@@ -661,14 +662,10 @@ class UserController extends Controller
      */
     public function teleExists($tele_num)
     {
-        $model = M('User');
-        $check_res = $model->where("tele_num = '".$tele_num."'")->find();
+        $user = new UserModel();
+        $check_res = $user->phoneRegistered($tele_num);
 
-        if (!empty($check_res)) {
-            return true;
-        }
-
-        return false;
+        return $check_res;
     }
 
 

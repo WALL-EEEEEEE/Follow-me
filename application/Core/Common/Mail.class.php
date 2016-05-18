@@ -99,7 +99,6 @@ class Mail
     	$from = $from != "" ? $from : C("MAILER.Sender") != null ? C("MAILER.Sender") : "";
     	$sender_name = $sender_name != "" ? $sender_name : C("MAILER.SenderName") != null ? C("MAILER.SenderName") : "";
   
-        dump($from);
         if (trim($from) == "") {
             return self::MAIL_NO_SENDER;
         }
@@ -108,14 +107,10 @@ class Mail
             return self::MAIL_NO_RECIVER;
         }
           
-        dump($from);
-        dump($templateVariable);
         $this->mail->setFrom($from, $sender_name);
         $HtmlParse = new HtmlParse();
         $this->mail->Body    = $HtmlParse->htmlparse("register_validate.html", $templateVariable);
-
-        dump($this->mail->Body);
-    
+       
         foreach ($to as $key => $value) {
             if (!$this->mail->validateAddress($value, "noregex")) {
                 return self::MAIL_RECIEVER_ADDRESS_INVALIDATE;
@@ -127,11 +122,8 @@ class Mail
            
 
         if (!$this->mail->send()) {
-            echo "发送失败!</br>";
-            echo $this->mail->ErrorInfo;
             return self::MAIL_INTERNAL_ERROR;
         } else {
-            echo "发送成功!";
             return self::MAIL_SEND_SUCCESS;
         }
     }

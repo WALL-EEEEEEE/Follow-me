@@ -170,7 +170,7 @@ class UserModel extends Model
             //邮箱是否已经激活
             $check_res = $user_mail_activate->where("u_id = '".$uid."' and account_status = 1")->find();
 
-            if ($check_res != null && !$check_res) {
+            if (!empty($check_res)) {
                 return true;
             }
         }
@@ -194,7 +194,7 @@ class UserModel extends Model
              //手机是否通过验证
             $check_res = $user_phone_activate->where("uid = '".$uid."' and account_status = 1")->find();
 
-            if ($check_res != null && $check_res != false) {
+            if ($check_res != null || $check_res != false) {
                 return true;
             }
         }
@@ -202,6 +202,23 @@ class UserModel extends Model
 
     }
 
+    /**
+     * 检测用户名是否被注册过
+     * @param  [string] $user_alias [用户名]
+     * @return [boolean]            [true,用户已经被注册,false,用户还没注册]
+     */
+    public function userNameRegistered($user_alias)
+    {
+        $user = M("user");
+
+        $check_res = $user->join("mail_activate ON user.user_id = mail_activate.u_id")->where("user_alias = '".$user_alias."' and  mail_activate.account_status = 1 ")->union("select * from user INNER JOIN phone_activate ON user.user_id = phone_activate.uid where user_alias = '".$user_alias."' and phone_activate.account_status = 1")->find();
+        if (empty($check_res)) {
+            return false;
+        }
+
+        return true;
+
+    }
 
 }
 

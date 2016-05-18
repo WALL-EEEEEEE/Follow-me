@@ -30,7 +30,7 @@ class HtmlParse
         //对传入变量进行简单的过滤
         $replace = array_map(function ($value) {
 
-               return htmlspecialchars($value);
+               return $value;
 
         }, $replace);
     

@@ -10,19 +10,85 @@
  */
 class AndroidController extends RestController
 {
-    protected $allowType = array('json');
     const  SERVICES_NO_EXISTES = -1;
-
-
-
+    protected $defaultType = "json";
     private $response_data  = array(
         "statusCode"=>"",
         "statusInfo"=>"",
         "content"   => array(),
         );
 
-    
-    /**
+
+    public function LoginVcode_get()
+    {
+        $user = new UserController;
+
+        $vcode = $user->vCode();
+
+        dump($vcode);
+
+        $statusCode = !empty($vcode)? 0:1;
+
+        $this->response_data["statusCode"] = $statusCode;
+        if ($statusCode == 0) {
+            $this->response_data["content"]["vcode"] = $vcode;
+        }
+        return $this->response($this->response_data, 'json');
+
+    }
+
+
+    public function RegisterActivateMsgSend_get()
+    {
+         $user = new UserController;
+
+         $statusCode = $user->phoneRegisterMsgSend();
+         $this->response_data["statusCode"]  = $statusCode;
+         return $this->response($this->response_data, 'json');
+
+    }
+
+    public function RegisterMobileActivate_get()
+    {
+        $Acode = I("get.msgcode", null);
+        $user = new UserController;
+
+        $statusCode = $user->mobileMsgVerify($Acode);
+        $this->response_data["statusCode"] = $statusCode;
+
+        return $this->response($this->response_data, 'json');
+    }
+
+
+    public function RegisterActivateMailSend_get()
+    {
+        $user = new UserController;
+        $statusCode = $user->mailRegisterSend();
+
+        $this->response_data["statusCode"] = $statusCode;
+
+        return $this->response($this->response_data, 'json');
+
+    }
+
+    public function RegisterMailActivate_get_xml()
+    {
+        $user = new UserController;
+        
+        $Acode = I("get.k", null);
+        $email = I("get.ac", null);
+
+        $statusCode = $user->mailActivate($Acode, $email);
+        $this->response_data["statusCode"] = $statusCode;
+
+        return $this->response($this->response_data, 'json');
+
+
+    }
+
+  
+
+   /**
      * 邮件注册
      * @param   post  [user_name,user_pwd,mail]
      * @return  json  {"statusCode": "", "statusInfo": "", "content"   : "" }
@@ -67,7 +133,8 @@ class AndroidController extends RestController
 
     }
 
-    /**
+  
+   /**
      * 判断用户别名是否存在
      * @param  get [u_name]
      * @return json {"statusCode":"","statusInfo":"","content":""}
@@ -144,9 +211,12 @@ class AndroidController extends RestController
          $statusCode = $user->teleExists($user_phone);
          $this->response_data["statusCode"] = $statusCode?1:0;
 
+
          return $this->response($this->response_data, 'json');
 
     }
+
+
 
     public function services_no_existes() {
 
@@ -154,7 +224,6 @@ class AndroidController extends RestController
         $this->response_data["statusInfo"] = "request error!";
 
         return $this->response($this->response_data, "json");
-
 
     }
 

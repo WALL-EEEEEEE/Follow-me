@@ -110,7 +110,6 @@ class RestController extends Controller {
             'csv'   =>  'text/csv',
             'html'  =>  'text/html,application/xhtml+xml,*/*'
         );
-        
         foreach($type as $key=>$val){
             $array   =  explode(',',$val);
             foreach($array as $k=>$v){

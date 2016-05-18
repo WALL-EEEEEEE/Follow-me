@@ -1,0 +1,21 @@
+[ 2016-05-18T10:43:27+08:00 ] ::1 /api/android/user/register_by_mail/activate?a=_41a20e3249ad74d401cafacef07c5c6c&k=9f4016408e8a6c1bddb95a015049a50c
+ERR: 非法操作:_41a20e3249ad74d401cafacef07c5c6c
+
+[ 2016-05-18T10:43:37+08:00 ] ::1 /api/android/user/register_by_mail/activate?a=_41a20e3249ad74d401cafacef07c5c6c&k=9f4016408e8a6c1bddb95a015049a50c
+ERR: 非法操作:_41a20e3249ad74d401cafacef07c5c6c
+
+[ 2016-05-18T10:43:46+08:00 ] ::1 /api/android/user/register_by_mail/activate?a=_41a20e3249ad74d401cafacef07c5c6c&k=9f4016408e8a6c1bddb95a015049a50c
+ERR: 非法操作:_41a20e3249ad74d401cafacef07c5c6c
+
+[ 2016-05-18T11:47:22+08:00 ] ::1 /api/android/user/register_by_mail/activate?ac=41a20e3249ad74d401cafacef07c5c6c&k=9f4016408e8a6c1bddb95a015049a50c
+ERR: SQLSTATE[HY000]: General error: 1267 Illegal mix of collations (gbk_chinese_ci,IMPLICIT) and (utf8_general_ci,COERCIBLE) for operation '='
+
+[ 2016-05-18T11:49:55+08:00 ] ::1 /api/android/user/register_by_mail/activate?ac=41a20e3249ad74d401cafacef07c5c6c&k=9f4016408e8a6c1bddb95a015049a50c
+ERR: SQLSTATE[HY000]: General error: 1267 Illegal mix of collations (gbk_chinese_ci,IMPLICIT) and (utf8_general_ci,COERCIBLE) for operation '='
+
+[ 2016-05-18T13:02:52+08:00 ] ::1 /api/android/user/register_by_phone/send_msg
+ERR: 非法操作:register_by_phone
+
+[ 2016-05-18T13:11:08+08:00 ] ::1 /api/android/user/register_by_phone/send_msg
+ERR: 非法操作:register_by_phone
+
