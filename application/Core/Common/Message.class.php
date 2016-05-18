@@ -103,14 +103,11 @@ class Message
 
      
             $ucpaas_templateId_config = $this->ucpaas_config["templateId"];
-            dump(empty($ucpaas_templateId_config));
             if (empty($ucpaas_templateId_config)&&!in_array("templateId", $config)) {
                     throw new \Exception("templateId can't be null");
             } else {
                     $ucpaas_templateId_config = !empty($config["templateId"])?$config["templateId"]:$ucpaas_templateId_config;
             }
-            dump($ucpaas_appId_config);
-            dump($this->service_handler->templateSMS($ucpaas_appId_config, $telephone, $ucpaas_templateId_config, $code));
 
             return $this->service_handler->templateSMS($ucpaas_appId_config, $telephone, $ucpaas_templateId_config, $param);
         } else {

@@ -7,7 +7,7 @@
 class WebController extends RestController
 {
 
-    public function read_xml()
+    public function read_get()
     {
 
          echo "web xml";
