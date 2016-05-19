@@ -10,7 +10,7 @@
  */
 class Message
 {
-
+    
     private $support_platform = array("ihuiyi","ucpaas");
     
     private $service_handler  = null;
@@ -109,9 +109,16 @@ class Message
                     $ucpaas_templateId_config = !empty($config["templateId"])?$config["templateId"]:$ucpaas_templateId_config;
             }
 
-            return $this->service_handler->templateSMS($ucpaas_appId_config, $telephone, $ucpaas_templateId_config, $param);
+            $send_check = json_decode($this->service_handler->templateSMS($ucpaas_appId_config, $telephone, $ucpaas_templateId_config, $param));
+            if (!empty($send_check->resp) && !empty($send_check->resp->respCode) && $send_check->resp->respCode == "0000") {
+                    return true;
+            } else {
+                    return false;
+            }
+
+
         } else {
-              return  $this->service_handler->send($code,$telephone);
+            return  $this->service_handler->send($code,$telephone);
         }
     }
 }

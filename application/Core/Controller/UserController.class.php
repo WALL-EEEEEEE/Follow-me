@@ -50,12 +50,13 @@ class UserController extends Controller
     const PHONE_ACTIVATE_ACTIVATED     = "00401";
     const PHONE_ACTIVATE_ACODE_ERROR   = "00402";
     const PHONE_ACTIVATE_ACODE_EXPIRED = "00403";
-    const PHONE_ACTIVATE_ACCOUNT_NOEXIST = "00404";
+    // const PHONE_ACTIVATE_ACCOUNT_NOEXIST = "00404";
     const PHONE_ACTIVATE_SESSION_USER_NOEXIST = "00405";
     const PHONE_ACTIVATE_USER_NOEXIST = "00406";
     const PHONE_ACTIVATE_USER_ACTIVATEINFO_NOEXIST = "00407";
     const PHONE_ACTIVATE_CODE_GENERATE_ERROR = "00408";
     const PHONE_ACTIVATE_STATUS_UPDATE_ERROR = "00409";
+    const PHONE_ACTIVATE_MSG_SEND_FAILED = "00410";
 
 
     //邮件激活状态码
@@ -63,7 +64,7 @@ class UserController extends Controller
     const MAIL_ACTIVATE_ACTIVATED     = "00501";
     const MAIL_ACTIVATE_ACODE_ERROR   = "00502";
     const MAIL_ACTIVATE_ACODE_EXPIRED = "00503";
-    const MAIL_ACTIVATE_ACCOUNT_NOEXIST = "00504";
+    // const MAIL_ACTIVATE_ACCOUNT_NOEXIST = "00504";
     const MAIL_ACTIVATE_SESSION_USER_NOEXIST = "00505";
     const MAIL_ACTIVATE_USER_NOEXIST = "00506";
     const MAIL_ACTIVATE_USER_ACTIVATEINFO_NOEXIST = "00507";
@@ -71,6 +72,7 @@ class UserController extends Controller
     const MAIL_ACTIVATE_EXPIRED = "00509";
     const MAIL_ACTIVATE_STATUS_UPDATE_ERROR = "00510";
     const MAIL_ACTIVATE_PARAMETER_ERROR ="00511";
+    const MAIL_ACTIVATE_SEND_FAILED  = "00512";
     
 
 
@@ -98,7 +100,7 @@ class UserController extends Controller
 
     // 24小时
     private $default_email_vcode_expire_time = 1440;
-    private $default_phone_vcode_expire_time = 1;
+    private $default_phone_vcode_expire_time = 3;
     
     protected $UserCate = array("User" ,"StudentUser" ,"SchoolUser","CompanyUser");
     private $registerType = array(1=>"mail",2=>"telephone");
@@ -335,7 +337,7 @@ class UserController extends Controller
         $user = new UserModel();
 
         if (!$user->userExist($user_id)) {
-            return self::MAIL_ACTIVATE_USER_NOEXIST; 
+            return self::MAIL_ACTIVATE_USER_NOEXIST;
         }
 
         //验证数据库中是否有用户的邮箱激活信息
@@ -378,7 +380,18 @@ class UserController extends Controller
         $info = array($user_info["user_alias"],$activate_url,date("Y年-m月-d日"));
         $mail_sender = new Mail();
         $reciever = array($acc_info["reg_mail"]);
-        return $mail_sender->send($reciever, $info);
+
+        $send_res = $mail_sender->send($reciever, $info);
+
+        if ($send_res != 0) {
+               return self::MAIL_ACTIVATE_SEND_FAILED;
+        }
+
+        return 0;
+
+
+
+
 }
 
     /**
@@ -411,10 +424,10 @@ class UserController extends Controller
         $acc_info = null;
         if ($user_id != null) {
             $acc_info =  $account_status->where("uid = '".$user_id."'")->find();
-        } else {
-            return self::PHONE_ACTIVATE_USER_ACTIVATEINFO_NOEXIST;
+            if (empty($acc_info)) {
+                 return self::PHONE_ACTIVATE_USER_ACTIVATEINFO_NOEXIST;
+            }
         }
-
     
         //防止重复激活
         if ($user->isActivate($user_id)) {
@@ -439,7 +452,15 @@ class UserController extends Controller
         }
 
         $msg_sender = new Message();
-        return $msg_sender->send($genActivatedCode, $acc_info["reg_phone"]);
+        $send_check = $msg_sender->send($genActivatedCode, $acc_info["reg_phone"]);
+        
+        if ($send_check) {
+            return 0;
+        } else {
+            return self::PHONE_ACTIVATE_MSG_SEND_FAILED;
+        }
+
+
 
          
     }

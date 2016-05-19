@@ -1,0 +1,1405 @@
+
+
+# --------------
+# Please enter the commit message for your changes. Everything below
+# this paragraph is ignored, and an empty message aborts the commit.
+# Just close the window to accept your message.
+diff --git a/Think.note b/Think.note
+index d907178..c112007 100644
+--- a/Think.note
++++ b/Think.note
+@@ -3,3 +3,7 @@ ThinkPHP中如果控制器中定义为
+ 
+ 出现系统错误
+ 
++@TODO
++  ThinkPHP中的union操作和join操作不支持连贯操作
++ $check_res = $user->join("mail_activate ON user.user_id = mail_activate.u_id")->where("user_alias = '".$user_alias."' and  mail_activate.account_status = 1 ")->union("select * from user INNER JOIN phone_activate ON user.user_id = phone_activate.uid where user_alias = '".$user_alias."' and phone_activate.account_status = 1")->find();
++
+diff --git a/ThinkPHP/Library/Think/Controller/RestController.class.php b/ThinkPHP/Library/Think/Controller/RestController.class.php
+index d30b446..173cc86 100644
+--- a/ThinkPHP/Library/Think/Controller/RestController.class.php
++++ b/ThinkPHP/Library/Think/Controller/RestController.class.php
+@@ -110,7 +110,6 @@ class RestController extends Controller {
+             'csv'   =>  'text/csv',
+             'html'  =>  'text/html,application/xhtml+xml,*/*'
+         );
+-        
+         foreach($type as $key=>$val){
+             $array   =  explode(',',$val);
+             foreach($array as $k=>$v){
+diff --git a/ThinkPHP/Library/Think/Verify.class.php b/ThinkPHP/Library/Think/Verify.class.php
+index 6e5e38a..466dece 100644
+--- a/ThinkPHP/Library/Think/Verify.class.php
++++ b/ThinkPHP/Library/Think/Verify.class.php
+@@ -174,15 +174,6 @@ class Verify {
+         $secode['verify_code'] = $code; // 把校验码保存到session
+         $secode['verify_time'] = NOW_TIME;  // 验证码创建时间
+         session($key.$id, $secode);
+-                        
+-        header('Cache-Control: private, max-age=0, no-store, no-cache, must-revalidate');
+-        header('Cache-Control: post-check=0, pre-check=0', false);		
+-        header('Pragma: no-cache');
+-        header("content-type: image/png");
+-
+-        // 输出图像
+-        imagepng($this->_image);
+-        imagedestroy($this->_image);
+     }
+ 
+     /** 
+@@ -290,4 +281,21 @@ class Verify {
+         return md5($key . $str);
+     }
+ 
++    public function display(){
++        header('Cache-Control: private, max-age=0, no-store, no-cache, must-revalidate');
++        header('Cache-Control: post-check=0, pre-check=0', false);
++        header('Pragma: no-cache');
++        header("content-type: image/png");
++
++        // 输出图像
++        imagepng($this->_image);
++        imagedestroy($this->_image);
++
++    }
++
++    public function getImage(){
++        imagepng($this->_image,""); 
++
++        return $this->_image;
++    }
+ }
+diff --git a/application/Api/Conf/config.php b/application/Api/Conf/config.php
+index 691d195..76578b6 100644
+--- a/application/Api/Conf/config.php
++++ b/application/Api/Conf/config.php
+@@ -1,14 +1,17 @@
+ <?php
+ 
+     return array(
+-
+         "URL_ROUTE_RULES"=>array(
+-            "android/user/register_by_mail"=>"android/register_by_mail",
+-            "android/user/register_by_phone"=>"android/register_by_phone",
+-            "android/user/phone_is_register"=>"android/userTelExist",
+-            "android/user/mail_is_register" =>"android/userEmailExist",
+-            "android/user/username_is_register" => "android/userNameExist",
+-            "android" => "android/services_no_existes",
++            "android/user/register_by_phone/activate" => "android/RegisterMobileActivate",
++            "android/user/register_by_phone/msg_send" => "android/RegisterActivateMsgSend",
++            "android/user/register_by_mail/mail_send" => "android/RegisterActivateMailSend",
++            "android/user/register_by_mail/activate"  =>"android/RegisterMailActivate" ,
++            "android/user/register_by_phone"          =>"android/register_by_phone",
++            "android/user/register_by_mail"           =>"android/register_by_mail",
++            "android/user/phone_is_register"          =>"android/userTelExist",
++            "android/user/mail_is_register"           =>"android/userEmailExist",
++            "android/user/username_is_register"       =>"android/userNameExist",
++            "android/user/login/vcode"                => "android/RegisterVcode",
+             ),
+         
+          );
+diff --git a/application/Api/Controller/AndroidController.class.php b/application/Api/Controller/AndroidController.class.php
+index 0d0d6a8..6952ed1 100644
+--- a/application/Api/Controller/AndroidController.class.php
++++ b/application/Api/Controller/AndroidController.class.php
+@@ -10,19 +10,85 @@
+  */
+ class AndroidController extends RestController
+ {
+-    protected $allowType = array('json');
+     const  SERVICES_NO_EXISTES = -1;
+-
+-
+-
++    protected $defaultType = "json";
+     private $response_data  = array(
+         "statusCode"=>"",
+         "statusInfo"=>"",
+         "content"   => array(),
+         );
+ 
+-    
+-    /**
++
++    public function LoginVcode_get()
++    {
++        $user = new UserController;
++
++        $vcode = $user->vCode();
++
++        dump($vcode);
++
++        $statusCode = !empty($vcode)? 0:1;
++
++        $this->response_data["statusCode"] = $statusCode;
++        if ($statusCode == 0) {
++            $this->response_data["content"]["vcode"] = $vcode;
++        }
++        return $this->response($this->response_data, 'json');
++
++    }
++
++
++    public function RegisterActivateMsgSend_get()
++    {
++         $user = new UserController;
++
++         $statusCode = $user->phoneRegisterMsgSend();
++         $this->response_data["statusCode"]  = $statusCode;
++         return $this->response($this->response_data, 'json');
++
++    }
++
++    public function RegisterMobileActivate_get()
++    {
++        $Acode = I("get.msgcode", null);
++        $user = new UserController;
++
++        $statusCode = $user->mobileMsgVerify($Acode);
++        $this->response_data["statusCode"] = $statusCode;
++
++        return $this->response($this->response_data, 'json');
++    }
++
++
++    public function RegisterActivateMailSend_get()
++    {
++        $user = new UserController;
++        $statusCode = $user->mailRegisterSend();
++
++        $this->response_data["statusCode"] = $statusCode;
++
++        return $this->response($this->response_data, 'json');
++
++    }
++
++    public function RegisterMailActivate_get_xml()
++    {
++        $user = new UserController;
++        
++        $Acode = I("get.k", null);
++        $email = I("get.ac", null);
++
++        $statusCode = $user->mailActivate($Acode, $email);
++        $this->response_data["statusCode"] = $statusCode;
++
++        return $this->response($this->response_data, 'json');
++
++
++    }
++
++  
++
++   /**
+      * 邮件注册
+      * @param   post  [user_name,user_pwd,mail]
+      * @return  json  {"statusCode": "", "statusInfo": "", "content"   : "" }
+@@ -67,7 +133,8 @@ class AndroidController extends RestController
+ 
+     }
+ 
+-    /**
++  
++   /**
+      * 判断用户别名是否存在
+      * @param  get [u_name]
+      * @return json {"statusCode":"","statusInfo":"","content":""}
+@@ -144,10 +211,13 @@ class AndroidController extends RestController
+          $statusCode = $user->teleExists($user_phone);
+          $this->response_data["statusCode"] = $statusCode?1:0;
+ 
++
+          return $this->response($this->response_data, 'json');
+ 
+     }
+ 
++
++
+     public function services_no_existes() {
+ 
+         $this->response_data["statusCode"] = self::SERVICES_NO_EXISTES;
+@@ -155,7 +225,6 @@ class AndroidController extends RestController
+ 
+         return $this->response($this->response_data, "json");
+ 
+-
+     }
+ 
+ 
+diff --git a/application/Api/Controller/WebController.class.php b/application/Api/Controller/WebController.class.php
+index 1c073e2..f40917b 100644
+--- a/application/Api/Controller/WebController.class.php
++++ b/application/Api/Controller/WebController.class.php
+@@ -7,7 +7,7 @@
+ class WebController extends RestController
+ {
+ 
+-    public function read_xml()
++    public function read_get()
+     {
+ 
+          echo "web xml";
+diff --git a/application/Api/Controller/WebchatController.class.php b/application/Api/Controller/WebchatController.class.php
+deleted file mode 100644
+index dd0a9c1..0000000
+--- a/application/Api/Controller/WebchatController.class.php
++++ /dev/null
+@@ -1,21 +0,0 @@
+-<?php
+-
+-
+-     namespace Api\Cowarning: LF will be replaced by CRLF in application/Api/Conf/config.php.
+The file will have its original line endings in your working directory.
+warning: LF will be replaced by CRLF in application/Core/Common/HtmlParse.class.php.
+The file will have its original line endings in your working directory.
+ntroller;
+-
+-     use Think\Controller\RestController;
+-     use Api\baseApi\Api;
+-
+-class WebchatController extends RestController
+-{
+-
+-    public function read_xml()
+-	{
+-
+-       echo "webchat  read_xml()";
+-
+-	}
+-}
+-
+-
+-
+diff --git a/application/Api/Controller/WechatController.class.php b/application/Api/Controller/WechatController.class.php
+new file mode 100644
+index 0000000..5f37f2d
+--- /dev/null
++++ b/application/Api/Controller/WechatController.class.php
+@@ -0,0 +1,28 @@
++<?php
++
++
++     namespace Api\Controller;
++
++     use Think\Controller\RestController;
++     use Api\baseApi\Api;
++
++class WechatController extends RestController
++{
++
++
++    public function read_get_xml()
++	{
++
++       echo "read_xml";
++
++	}
++
++	public function read_get_html()
++	{
++		echo "read_get_html";
++	}
++
++}
++
++
++
+diff --git a/application/Common/Conf/config.php-tmp b/application/Common/Conf/config.php-tmp
+deleted file mode 100644
+index fdb7827..0000000
+--- a/application/Common/Conf/config.php-tmp
++++ /dev/null
+@@ -1,7 +0,0 @@
+-<?php
+-return array(
+-	//'配置项'=>'配置值'
+-	//开启应用程序的url路由
+-	'URL_ROUTER_ON' => true,
+-
+-);
+diff --git a/application/Common/Conf/index.html b/application/Common/Conf/index.html
+deleted file mode 100644
+index 0519ecb..0000000
+--- a/application/Common/Conf/index.html
++++ /dev/null
+@@ -1 +0,0 @@
+- 
+\ No newline at end of file
+diff --git a/application/Common/index.html b/application/Common/index.html
+deleted file mode 100644
+index 0519ecb..0000000
+--- a/application/Common/index.html
++++ /dev/null
+@@ -1 +0,0 @@
+- 
+\ No newline at end of file
+diff --git a/application/Core/Common/HtmlParse.class.php b/application/Core/Common/HtmlParse.class.php
+index 36fceb5..2ac9e6c 100644
+--- a/application/Core/Common/HtmlParse.class.php
++++ b/application/Core/Common/HtmlParse.class.php
+@@ -30,7 +30,7 @@ class HtmlParse
+         //对传入变量进行简单的过滤
+         $replace = array_map(function ($value) {
+ 
+-               return htmlspecialchars($value);
++               return $value;
+ 
+         }, $replace);
+     
+diff --git a/application/Core/Common/Mail.class.php b/application/Core/Common/Mail.class.php
+index 50836cc..7227be6 100644
+--- a/application/Core/Common/Mail.class.php
++++ b/application/Core/Common/Mail.class.php
+@@ -99,7 +99,6 @@ class Mail
+     	$from = $from != "" ? $from : C("MAILER.Sender") != null ? C("MAILER.Sender") : "";
+     	$sender_name = $sender_name != "" ? $sender_name : C("MAILER.SenderName") != null ? C("MAILER.SenderName") : "";
+   
+-        dump($from);
+         if (trim($from) == "") {
+             return self::MAIL_NO_SENDER;
+         }
+@@ -108,14 +107,10 @@ class Mail
+             return self::MAIL_NO_RECIVER;
+         }
+           
+-        dump($from);
+-        dump($templateVariable);
+         $this->mail->setFrom($from, $sender_name);
+         $HtmlParse = new HtmlParse();
+         $this->mail->Body    = $HtmlParse->htmlparse("register_validate.html", $templateVariable);
+-
+-        dump($this->mail->Body);
+-    
++       
+         foreach ($to as $key => $value) {
+             if (!$this->mail->validateAddress($value, "noregex")) {
+                 return self::MAIL_RECIEVER_ADDRESS_INVALIDATE;
+@@ -127,11 +122,8 @@ class Mail
+            
+ 
+         if (!$this->mail->send()) {
+-            echo "发送失败!</br>";
+-            echo $this->mail->ErrorInfo;
+             return self::MAIL_INTERNAL_ERROR;
+         } else {
+-            echo "发送成功!";
+             return self::MAIL_SEND_SUCCESS;
+         }
+     }
+diff --git a/application/Core/Common/Message.class.php b/application/Core/Common/Message.class.php
+index 9e9f435..1da0a64 100644
+--- a/application/Core/Common/Message.class.php
++++ b/application/Core/Common/Message.class.php
+@@ -103,14 +103,11 @@ class Message
+ 
+      
+             $ucpaas_templateId_config = $this->ucpaas_config["templateId"];
+-            dump(empty($ucpaas_templateId_config));
+             if (empty($ucpaas_templateId_config)&&!in_array("templateId", $config)) {
+                     throw new \Exception("templateId can't be null");
+warning: LF will be replaced by CRLF in application/Core/Common/Mail.class.php.
+The file will have its original line endings in your working directory.
+             } else {
+                     $ucpaas_templateId_config = !empty($config["templateId"])?$config["templateId"]:$ucpaas_templateId_config;
+             }
+-            dump($ucpaas_appId_config);
+-            dump($this->service_handler->templateSMS($ucpaas_appId_config, $telephone, $ucpaas_templateId_config, $code));
+ 
+             return $this->service_handler->templateSMS($ucpaas_appId_config, $telephone, $ucpaas_templateId_config, $param);
+         } else {
+diff --git a/application/Core/Conf/config.php-tmp b/application/Core/Conf/config.php-tmp
+deleted file mode 100644
+index fa7febd..0000000
+--- a/application/Core/Conf/config.php-tmp
++++ /dev/null
+@@ -1,6 +0,0 @@
+-<?php
+-return array(
+-	//'配置项'=>'配置值'
+-	'URL_ROUTE_RULES'         => array(
+-		'news/:year/:month/:day' => array('TestRoute1/test1', 'status=1')),
+-);
+diff --git a/application/Core/Conf/index.html b/application/Core/Conf/index.html
+deleted file mode 100644
+index 0519ecb..0000000
+--- a/application/Core/Conf/index.html
++++ /dev/null
+@@ -1 +0,0 @@
+- 
+\ No newline at end of file
+diff --git a/application/Core/Controller/UserController.class.php b/application/Core/Controller/UserController.class.php
+index 60c4296..f329baa 100644
+--- a/application/Core/Controller/UserController.class.php
++++ b/application/Core/Controller/UserController.class.php
+@@ -70,6 +70,9 @@ class UserController extends Controller
+     const MAIL_ACTIVATE_CODE_GENERATE_ERROR  = "00508";
+     const MAIL_ACTIVATE_EXPIRED = "00509";
+     const MAIL_ACTIVATE_STATUS_UPDATE_ERROR = "00510";
++    const MAIL_ACTIVATE_PARAMETER_ERROR ="00511";
++    
++
+ 
+ 
+ 
+@@ -308,13 +311,15 @@ class UserController extends Controller
+         $VerifyCodeStyle = array();
+         $Verify = new Verify($VerifyCodeStyle);
+         $Verify->entry();
++
++        return $Verify->getImage();
+     }
+ 
+     /**
+      * 邮箱注册激活邮件发送
+      * @return [integer]    [0为发送成功,非0为发送失败]
+      */
+-    public function mailRegisterSend()
++    public function mailRegisterSend($mail = "")
+     {
+ 
+         $user_id = null;
+@@ -324,15 +329,13 @@ class UserController extends Controller
+             return self::MAIL_ACTIVATE_SESSION_USER_NOEXIST;
+         } else {
+             $user_id = session("user_id");
+-            //消除session数据
+-            session("user_id", null);
+         }
+ 
+         //验证数据库中是否有用户信息
+         $user = new UserModel();
+ 
+         if (!$user->userExist($user_id)) {
+-            return self::MAIL_ACTIVATE_USER_NOEXIST;
++            return self::MAIL_ACTIVATE_USER_NOEXIST; 
+         }
+ 
+         //验证数据库中是否有用户的邮箱激活信息
+@@ -369,7 +372,9 @@ class UserController extends Controller
+         }
+ 
+         //生成激活链接
+-        $activate_url  = "http://localhost/Core/user/mailActivate?token=".$genActivatedCode."&uid=".$user_id;
++
++        $activate_url  = "http://".$_SERVER["HTTP_HOST"]."/api/android/user/register_by_mail/activate?ac=".base64_encode($user_info["mail"])."&k=".$genActivatedCode;
++        $activate_url = "<a href=\"".$activate_url."\""."  target=\"_blank\">"."点击这里激活账号"."</a>";
+         $info = array($user_info["user_alias"],$activate_url,date("Y年-m月-d日"));
+         $mail_sender = new Mail();
+         $reciever = array($acc_info["reg_mail"]);
+@@ -434,7 +439,6 @@ class UserController extends Controller
+         }
+ 
+         $msg_sender = new Message();
+-        exit(0);
+         return $msg_sender->send($genActivatedCode, $acc_info["reg_phone"]);
+ 
+          
+@@ -450,7 +454,7 @@ class UserController extends Controller
+      */
+ 
+     
+-    public function initialAccountStatus($uid)
++    private function initialAccountStatus($uid)
+     {
+          $user_id = $uid;
+          //获取用户的邮箱账号
+@@ -566,8 +570,16 @@ class UserController extends Controller
+         
+         $user = new UserModel();
+ 
+-        if (!$user->userExist($uid)) {
+-            return self::MAIL_ACTIVATE_USER_NOEXIST;
++        if (empty($activate_code) || empty($mailAccount)) {
++              return self::MAIL_ACTIVATE_PARAMETER_ERROR;
++        }
++
++        $user_exist = $user->field("user_id")->where("mail = '".base64_decode($mailAccount)."'")->find();
++        $uid = $user_exist["user_id"];
++ 
++
++        if (empty($uid)) {
++               return self::MAIL_ACTIVATE_USER_NOEXIST;
+         }
+ 
+         $mail_activate = M("mail_activate");
+@@ -624,15 +636,9 @@ class UserController extends Controller
+      */
+     public function aliasExists($alias)
+     {
+-        $model =  M("User");
+-        $check_res = $model->where("user_alias = '".$alias."'")->find();
+-
+-        if (!empty($check_res)) {
+-            return true;
+-        }
+-
+-
+-        return false;
++        $user =  D("Core/User");
++        $check_res = $user->userNameRegistered($alias);
++        return $check_res;
+     }
+ 
+     /**
+@@ -642,15 +648,10 @@ class UserController extends Controller
+      */
+     public function emailExists($email = '')
+     {
+-        $model = M('User');
+-        $check_res = $model->where("mail = '".$email."'")->find();
+-
+-        if (!empty($check_res)) {
+-            return true;
+-        }
+-
++        $user = new UserModel();
++        $check_res = $user->mailRegistered($email);
+ 
+-        return false;
++        return $check_res;
+     }
+ 
+ 
+@@ -661,14 +662,10 @@ class UserController extends Controller
+      */
+     public function teleExists($tele_num)
+     {
+-        $model = M('User');
+-        $check_res = $model->where("tele_num = '".$tele_num."'")->find();
+-
+-        if (!empty($check_res)) {
+-            return true;
+-        }
++        $user = new UserModel();
++        $check_res = $user->phoneRegistered($tele_num);
+ 
+-        return false;
++        return $check_res;
+     }
+ 
+ 
+diff --git a/application/Core/Model/UserModel.class.php b/application/Core/Model/UserModel.class.php
+index 121e5a9..38d04b0 100644
+--- a/application/Core/Model/UserModel.class.php
++++ b/application/Core/Model/UserModel.class.php
+@@ -170,7 +170,7 @@ class UserModel extends Model
+             //邮箱是否已经激活
+             $check_res = $user_mail_activate->where("u_id = '".$uid."' and account_status = 1")->find();
+ 
+-            if ($check_res != null && !$check_res) {
++            if (!empty($check_res)) {
+                 return true;
+             }
+         }
+@@ -194,7 +194,7 @@ class UserModel extends Model
+              //手机是否通过验证
+             $check_res = $user_phone_activate->where("uid = '".$uid."' and account_status = 1")->find();
+ 
+-            if ($check_res != null && $check_res != false) {
++            if ($check_res != null || $check_res != false) {
+                 return true;
+             }
+         }
+@@ -202,6 +202,23 @@ class UserModel extends Model
+ 
+     }
+ 
++    /**
++     * 检测用户名是否被注册过
++     * @param  [string] $user_alias [用户名]
++     * @return [boolean]            [true,用户已经被注册,false,用户还没注册]
++     */
++    public function userNameRegistered($user_alias)
++    {
++        $user = M("user");
++
++        $check_res = $user->join("mail_activate ON user.user_id = mail_activate.u_id")->where("user_alias = '".$user_alias."' and  mail_activate.account_status = 1 ")->union("select * from user INNER JOIN phone_activate ON user.user_id = phone_activate.uid where user_alias = '".$user_alias."' and phone_activate.account_status = 1")->find();
++        if (empty($check_res)) {
++            return false;
++        }
++
++        return true;
++
++    }
+ 
+ }
+ 
+diff --git a/application/Core/Test/Encryption/rsa_encrypt.php b/application/Core/Test/Encryption/rsa_encrypt.php
+new file mode 100644
+index 0000000..cf60dfc
+--- /dev/null
++++ b/application/Core/Test/Encryption/rsa_encrypt.php
+@@ -0,0 +1,76 @@
++<?php
++
++      $private_key = '-----BEGIN RSA PRIVATE KEY-----
++MIICXQIBAAKBgQC++SsbogzteAwnbdd7OX9mFDlH9mwslsx0Xps13AwjFVkEqBPd
++Rx0h/7fsor36xv2cDvgeawrYWzYJDaetYCW0IAbW5P/cBQTtewVHR6hEp5P40nat
++OJz6bADOlzZRL6O/w0WIb0K33haMoSHdU4jenfgg5TjRJ1z5dm6OUA6cWwIDAQAB
++AoGAQrEzi7/o8dlVrUNf2Cm5QwXXBzmYh23WUuFjJMkG+A2Re93SqhkWpHPwYFRp
++MjXiBWj4326UaABae4joQNTt9UF0cpEpCok2qBV+dHQmaROE8zKxhrMeClkMKzwT
++WIzhQDFJqc7cwDVcYMg9DMDvXmtHttv3KCeQw6hgYmHhF5kCQQD0I+cKlCEbmRLq
++B1sbkBvp9phAWEFZxvV27hn7myYAqOWOiVRFBuOLKZJVjWPBZczwefDTjH4KmOp5
++0UFMpHy9AkEAyEAWrpyuR9ig2/kDQ2f/d6ZcvPkf+Gt+5kIBXtRUiIskoKdGW5PQ
++GDfcv2rxkWAAyqySb9qbw7snCKZDVcRq9wJBAKHcc79luhWMBSg3vEWn43nYTdTL
++LniRGgjBj2Rq1mU1lQxNLBufl5iZ9TTXSr3b+mWs0ufOi3oHK92byIlBvJkCQQCc
++AmIpc2PMEZdxCRVjxHghTXjeuPARaB4bYb0TljStlEna57dGzWfIFm1iq/y7l6HG
++RKBpiFTmLr6AXJgFD9uNAkAFkRI2MbAx1NHyRQfgXrp5dtYmK7mFDS9w0p/ePpP9
++vIFHGSlkYdRckaazpT/BfILjt0bpTx5EssfRX5nlm1fE
++-----END RSA PRIVATE KEY-----
++';
++
++$public_key = '
++-----BEGIN PUBLIC KEY-----
++MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC++SsbogzteAwnbdd7OX9mFDlH
++9mwslsx0Xps13AwjFVkEqBPdRx0h/7fsor36xv2cDvgeawrYWzYJDaetYCW0IAbW
++5P/cBQTtewVHR6hEp5P40natOJz6bADOlzZRL6O/w0WIb0K33haMoSHdU4jenfgg
++5TjRJ1z5dm6OUA6cWwIDAQAB
++-----END PUBLIC KEY-----
++';
++
++//判断私钥是否可用
++$pi_key = openssl_pkey_get_private($private_key);
++//判断公钥是否可用
++$pu_key = openssl_pkey_get_public($public_key);
++
++var_dump($pi_key);echo "\n";
++var_dump($pu_key);echo "\n";
++
++$data = "aasssasssddd";//原始数据
++$encrypted = "";
++$decrpted  = "";
++
++echo "source data:".$data."\n";
++echo "private key encrypt:\n";
++
++//私钥加密
++openssl_private_encrypt($data,$encrypted,$pi_key);
++$encrypted = base64_encode($encrypted);
++
++echo $encrypted."\n";
++
++echo "public key decrypt:\n";
++
++openssl_public_decrypt(base64_decode($encrypted),$decrpted,$pu_key);
++echo $decrpted."\n";
++
++
++echo "--------------------------";
++echo "public key encrypt: \n";
++
++openssl_public_encrypt($data,$encrypted,$pu_key); //公钥加密
++
++$encrypted = base64_encode($encrypted);
++
++echo $encrypted."\n";
++
++echo "private key decrypt:\n";
++
++openssl_private_decrypt(base64_decode($encrypted),$decrpted,$pi_key);//私钥解密
++
++echo $decrpted,"\n";
++
++
++
++
++
++
++
+diff --git a/application/Runtime/Logs/Api/16_05_16.log b/application/Runtime/Logs/Api/16_05_16.log
+new file mode 100644
+index 0000000..cdab2e5
+--- /dev/null
++++ b/application/Runtime/Logs/Api/16_05_16.log
+@@ -0,0 +1,126 @@
++[ 2016-05-16T22:14:47+08:00 ] ::1 /api/android/user/username_is_register?u_name=duanduan1
++ERR: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'follow_me.user_model' doesn't exist
++
++[ 2016-05-16T22:15:15+08:00 ] ::1 /api/android/user/username_is_register?u_name=duanduan1
++ERR: 非法操作:userNameExist
++
++[ 2016-05-16T22:19:00+08:00 ] ::1 /api/android/user/username_is_register?u_name=duanduan1
++ERR: 非法操作:userNameExist
++
++[ 2016-05-16T22:19:01+08:00 ] ::1 /api/android/user/username_is_register?u_name=duanduan1
++ERR: 非法操作:userNameExist
++
++[ 2016-05-16T22:21:01+08:00 ] ::1 /api/android/user/username_is_register?u_name=duanduan1
++ERR: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'follow_me.user_model' doesn't exist
++
++[ 2016-05-16T22:21:37+08:00 ] ::1 /api/android/user/register_by_mail
++ERR: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'follow_me.user_model' doesn't exist
++
++[ 2016-05-16T22:21:56+08:00 ] ::1 /api/android/user/username_is_register?u_name=duanduan1
++ERR: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'follow_me.user_model' doesn't exist
++
++[ 2016-05-16T22:22:13+08:00 ] ::1 /api/android/user/username_is_register?u_name=duanduan1
++ERR: 非法操作:userNameExist
++
++[ 2016-05-16T22:23:30+08:00 ] ::1 /api/android/user/username_is_register?u_name=duanduan1
++ERR: 非法操作:userNameExist
++
++[ 2016-05-16T22:23:33+08:00 ] ::1 /api/android/user/username_is_register?u_name=duanduan1
++ERR: 非法操作:userNameExist
++
++[ 2016-05-16T22:23:46+08:00 ] ::1 /api/android/user/username_is_register?u_name=duanduan1
++ERR: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'follow_me.user_model' doesn't exist
++
++[ 2016-05-16T22:23:55+08:00 ] ::1 /api/android/user/username_is_register?u_name=duanduan1
++ERR: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'follow_me.user_model' doesn't exist
++
++[ 2016-05-16T22:24:03+08:00 ] ::1 /api/android/user/username_is_register?u_name=duanduan1
++ERR: 非法操作:userNameExist
++
++[ 2016-05-16T22:24:05+08:00 ] ::1 /api/android/user/username_is_register?u_name=duanduan1
++ERR: 非法操作:userNameExist
++
++[ 2016-05-16T22:24:27+08:00 ] ::1 /api/android/user/username_is_register?u_name=duanduan1
++ERR: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'follow_me.user_model' doesn't exist
++
++[ 2016-05-16T22:25:02+08:00 ] ::1 /api/android/user/username_is_register?u_name=duanduan1
++ERR: 非法操作:userNameExist
++
++[ 2016-05-16T22:25:20+08:00 ] ::1 /api/android/user/username_is_register?u_name=duanduan1
++ERR: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'follow_me.user_model' doesn't exist
++
++[ 2016-05-16T22:27:16+08:00 ] ::1 /api/android/user/username_is_register?u_name=duanduan1
++ERR: 非法操作:userNameExist
++
++[ 2016-05-16T22:27:21+08:00 ] ::1 /api/android/user/username_is_register?u_name=duanduan1
++ERR: Think\Model:userNameRegistered方法不存在！
++
++[ 2016-05-16T22:28:35+08:00 ] ::1 /api/android/user/username_is_register?u_name=duanduan1
++ERR: Think\Model:userNameRegistered方法不存在！
++
++[ 2016-05-16T22:29:48+08:00 ] ::1 /api/android/user/username_is_register?u_name=duanduan1
++ERR: 非法操作:userNameExist
++
++[ 2016-05-16T22:30:38+08:00 ] ::1 /api/android/user/username_is_register?u_name=duanduanwer23
++ERR: 非法操作:userNameExist
++
++[ 2016-05-16T22:30:42+08:00 ] ::1 /api/android/user/username_is_register?u_name=duanduanwer23
++ERR: 非法操作:userNameExist
++
++[ 2016-05-16T22:31:38+08:00 ] ::1 /api/android/user/username_is_register?u_name=duanduanwer23
++ERR: 非法操作:userNameExist
++
++[ 2016-05-16T22:32:56+08:00 ] ::1 /api/android/user/username_is_register?u_name=duanduanwer23
++ERR: 非法操作:userNameExist
++
++[ 2016-05-16T22:33:00+08:00 ] ::1 /api/android/user/username_is_register?u_name=duanduanwer23
++ERR: 非法操作:userNameExist
++
++[ 2016-05-16T22:34:54+08:00 ] ::1 /api/android/user/username_is_register?u_name=duanduanwer23
++ERR: Think\Model:userNameRegistered方法不存在！
++
++[ 2016-05-16T22:39:19+08:00 ] ::1 /api/android/user/username_is_register?u_name=duanduanwer23
++ERR: Think\Model:userNameRegistered方法不存在！
++
++[ 2016-05-16T22:52:16+08:00 ] ::1 /api/android/user/username_is_register?u_name=duanduanwer23
++ERR: Think\Model:userNameRegistered方法不存在！
++
++[ 2016-05-16T22:52:21+08:00 ] ::1 /api/android/user/username_is_register?u_name=duanduanwer23
++ERR: Think\Model:userNameRegistered方法不存在！
++
++[ 2016-05-16T22:53:09+08:00 ] ::1 /api/android/user/username_is_register?u_name=duanduanwer23
++ERR: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'user_name' in 'where clause'
++
++[ 2016-05-16T22:53:37+08:00 ] ::1 /api/android/user/username_is_register?u_name=duanduanwer23
++ERR: SQLSTATE[HY000]: General error: 1267 Illegal mix of collations (greek_general_ci,IMPLICIT) and (gbk_chinese_ci,IMPLICIT) for operation '='
++
++[ 2016-05-16T22:54:48+08:00 ] ::1 /api/android/user/username_is_register?u_name=duanduanwer23
++ERR: SQLSTATE[HY000]: General error: 1267 Illegal mix of collations (greek_general_ci,IMPLICIT) and (gbk_chinese_ci,IMPLICIT) for operation '='
++
++[ 2016-05-16T22:56:21+08:00 ] ::1 /api/android/user/username_is_register?u_name=duanduanwer23
++ERR: 非法操作:userNameExist
++
++[ 2016-05-16T22:56:38+08:00 ] ::1 /api/android/user/username_is_register?u_name=duanduanwer23
++ERR: 非法操作:userNameExist
++
++[ 2016-05-16T22:57:13+08:00 ] ::1 /api/android/user/username_is_register?user_name=duanduan1
++ERR: 非法操作:userNameExist
++
++[ 2016-05-16T22:57:35+08:00 ] ::1 /api/android/user/username_is_register?u_name=duanduanwer23
++ERR: 非法操作:userNameExist
++
++[ 2016-05-16T22:57:47+08:00 ] ::1 /api/android/user/username_is_register?u_name=duanduanwer23
++ERR: SQLSTATE[HY000]: General error: 1267 Illegal mix of collations (greek_general_ci,IMPLICIT) and (gbk_chinese_ci,IMPLICIT) for operation '='
++
++[ 2016-05-16T22:59:01+08:00 ] ::1 /api/android/user/username_is_register?u_name=duanduanwer23
++ERR: SQLSTATE[HY000]: General error: 1267 Illegal mix of collations (greek_general_ci,IMPLICIT) and (gbk_chinese_ci,IMPLICIT) for operation '='
++
++[ 2016-05-16T22:59:36+08:00 ] ::1 /api/android/user/username_is_register?u_name=duanduanwer23
++ERR: SQLSTATE[HY000]: General error: 1267 Illegal mix of collations (greek_general_ci,IMPLICIT) and (gbk_chinese_ci,IMPLICIT) for operation '='
++
++[ 2016-05-16T23:01:26+08:00 ] ::1 /api/android/user/username_is_register?u_name=duanduanwer23
++ERR: SQLSTATE[HY000]: General error: 1267 Illegal mix of collations (greek_general_ci,IMPLICIT) and (gbk_chinese_ci,IMPLICIT) for operation '='
++
++[ 2016-05-16T23:01:55+08:00 ] ::1 /api/android/user/username_is_register?u_name=duanduanwer23
++ERR: SQLSTATE[HY000]: General error: 1267 Illegal mix of collations (greek_general_ci,IMPLICIT) and (gbk_chinese_ci,IMPLICIT) for operation '='
++
+diff --git a/application/Runtime/Logs/Api/16_05_17.log b/application/Runtime/Logs/Api/16_05_17.log
+new file mode 100644
+index 0000000..e018c35
+--- /dev/null
++++ b/application/Runtime/Logs/Api/16_05_17.log
+@@ -0,0 +1,459 @@
++[ 2016-05-17T11:01:59+08:00 ] ::1 /api/android/user/username_is_register?u_name=duanduan1
++ERR: SQLSTATE[21000]: Cardinality violation: 1222 The used SELECT statements have a different number of columns
++
++[ 2016-05-17T11:04:36+08:00 ] ::1 /api/android/user/username_is_register?u_name=duanduan1
++ERR: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'phone_activate.id' in 'on clause'
++
++[ 2016-05-17T11:16:35+08:00 ] ::1 /api/android/user/username_is_register?u_name=duanduan1
++ERR: 非法操作:userNameExist
++
++[ 2016-05-17T11:17:22+08:00 ] ::1 /api/android/user/username_is_register?u_name=duanduan1
++ERR: 非法操作:userNameExist
++
++[ 2016-05-17T11:17:22+08:00 ] ::1 /api/android/user/username_is_register?u_name=duanduan1
++ERR: 非法操作:userNameExist
++
++[ 2016-05-17T11:18:18+08:00 ] ::1 /api/android/user/username_is_register?u_name=duanduan1
++ERR: 非法操作:userNameExist
++
++[ 2016-05-17T11:18:19+08:00 ] ::1 /api/android/user/username_is_register?u_name=duanduan1
++ERR: 非法操作:userNameExist
++
++[ 2016-05-17T12:24:48+08:00 ] ::1 /api/android/user/register_by_mail/mail_send
++ERR: 非法操作:register_by_mail
++
++[ 2016-05-17T12:25:03+08:00 ] ::1 /api/android/user/register_by_mail/mail_send
++ERR: 非法操作:register_by_mail
++
++[ 2016-05-17T12:25:36+08:00 ] ::1 /api/android/user/register_by_mail/mail_send
++ERR: 非法操作:register_by_mail
++
++[ 2016-05-17T12:26:13+08:00 ] ::1 /api/android/user/register_by_mail/mail_send
++ERR: 非法操作:register_by_mail
++
++[ 2016-05-17T12:26:59+08:00 ] ::1 /api/android/user/register_by_mail/mail_send
++ERR: 非法操作:register_by_mail
++
++[ 2016-05-17T12:27:39+08:00 ] ::1 /api/android/user/register_by_mail/mail_send
++ERR: 非法操作:register_by_mail
++
++[ 2016-05-17T12:27:55+08:00 ] ::1 /api/android/user/username_is_register?u_name=duanduan1
++ERR: 非法操作:userNameExist
++
++[ 2016-05-17T12:27:55+08:00 ] ::1 /api/android/user/username_is_register?u_name=duanduan1
++ERR: 非法操作:userNameExist
++
++[ 2016-05-17T12:28:11+08:00 ] ::1 /api/android/user/register_by_mail/mail_send
++ERR: 非法操作:register_by_mail
++
++[ 2016-05-17T12:29:45+08:00 ] ::1 /api/android/user/register_by_mail/mail_send
++ERR: 非法操作:register_by_mail
++
++[ 2016-05-17T12:30:47+08:00 ] ::1 /api/android/user/register_by_mail/mail_send
++ERR: 非法操作:register_by_mail
++
++[ 2016-05-17T12:31:33+08:00 ] ::1 /api/android/user/register_by_mail/mail_send
++ERR: 非法操作:register_by_mail
++
++[ 2016-05-17T12:32:50+08:00 ] ::1 /api/android/user/register_by_mail/mail_send
++ERR: 非法操作:register_by_mail
++
++[ 2016-05-17T13:27:37+08:00 ] 127.0.0.1 /api/android/user/register_by_mail/mail_send
++ERR: 非法操作:RegisterActivateMailSend
++
++[ 2016-05-17T13:28:38+08:00 ] 127.0.0.1 /api/android/user/register_by_mail/mail_send
++ERR: 非法操作:RegisterActivateMailSend
++
++[ 2016-05-17T13:29:27+08:00 ] 127.0.0.1 /api/android/user/register_by_mail/activate?email=2574580419@qq.com&token=9f4016408e8a6c1bddb95a015049a50c
++ERR: 非法操作:RegisterMobileActivate
++
++[ 2016-05-17T13:33:21+08:00 ] 127.0.0.1 /api/android/user/register_by_mail/mail_send
++ERR: 非法操作:RegisterActivateMailSend
++
++[ 2016-05-17T13:33:32+08:00 ] 127.0.0.1 /api/android/user/register_by_mail/activate?email=2574580419@qq.com&token=9f4016408e8a6c1bddb95a015049a50c
++ERR: 非法操作:RegisterMailActivate
++
++[ 2016-05-17T13:34:48+08:00 ] 127.0.0.1 /api/android/user/register_by_mail/activate?email=2574580419@qq.com&token=9f4016408e8a6c1bddb95a015049a50c
++ERR: 非法操作:RegisterMailActivate
++
++[ 2016-05-17T13:35:31+08:00 ] 127.0.0.1 /api/android/user/register_by_mail/activate?email=2574580419@qq.com&token=9f4016408e8a6c1bddb95a015049a50c
++ERR: 非法操作:RegisterMailActivate
++
++[ 2016-05-17T13:35:42+08:00 ] 127.0.0.1 /api/android/user/register_by_mail/mail_send
++ERR: 非法操作:RegisterActivateMailSend
++
++[ 2016-05-17T13:37:14+08:00 ] 127.0.0.1 /api/android/user/register_by_mail/mail_send
++ERR: 非法操作:RegisterActivateMailSend
++
++[ 2016-05-17T13:39:26+08:00 ] 127.0.0.1 /api/android/user/register_by_mail/mail_send
++ERR: 非法操作:RegisterActivateMailSend
++
++[ 2016-05-17T13:39:31+08:00 ] 127.0.0.1 /api/android/user/register_by_mail/activate?email=2574580419@qq.com&token=9f4016408e8a6c1bddb95a015049a50c
++ERR: 非法操作:RegisterMailActivate
++
++[ 2016-05-17T13:39:32+08:00 ] 127.0.0.1 /api/android/user/register_by_mail/activate?email=2574580419@qq.com&token=9f4016408e8a6c1bddb95a015049a50c
++ERR: 非法操作:RegisterMailActivate
++
++[ 2016-05-17T13:39:45+08:00 ] 127.0.0.1 /api/android/user/register_by_mail/activate?email=2574580419@qq.com&token=9f4016408e8a6c1bddb95a015049a50c
++ERR: 非法操作:RegisterMailActivate
++
++[ 2016-05-17T13:40:30+08:00 ] ::1 /api/android/user/phone_is_register?phone=13132283239
++ERR: 非法操作:userTelExist
++
++[ 2016-05-17T16:04:27+08:00 ] ::1 /api/android/
++ERR: 非法操作:index
++
++[ 2016-05-17T16:04:40+08:00 ] ::1 /api/android/userTelExist
++ERR: 非法操作:userTelExist
++
++[ 2016-05-17T16:05:22+08:00 ] ::1 /Api/android/userTelExist
++ERR: 非法操作:userTelExist
++
++[ 2016-05-17T16:05:28+08:00 ] ::1 /Api/Android/userTelExist
++ERR: 非法操作:userTelExist
++
++[ 2016-05-17T16:05:36+08:00 ] ::1 /Api/Android/usertelexist
++ERR: 非法操作:usertelexist
++
++[ 2016-05-17T16:06:02+08:00 ] ::1 /api/android/register_by_phone
++ERR: 非法操作:register_by_phone
++
++[ 2016-05-17T16:06:33+08:00 ] ::1 /api/wechat
++ERR: 无法加载控制器:Wechat
++
++[ 2016-05-17T16:06:44+08:00 ] ::1 /api/wechat
++ERR: 无法加载控制器:Wechat
++
++[ 2016-05-17T16:07:11+08:00 ] ::1 /api/wechat
++ERR: 无法加载控制器:Wechat
++
++[ 2016-05-17T16:07:15+08:00 ] ::1 /api/wechat
++ERR: 无法加载控制器:Wechat
++
++[ 2016-05-17T16:07:27+08:00 ] ::1 /api/wechat
++ERR: 非法操作:index
++
++[ 2016-05-17T16:08:50+08:00 ] ::1 /api/wechat/read_get
++ERR: 非法操作:read_get
++
++[ 2016-05-17T16:09:58+08:00 ] ::1 /api/android/
++ERR: 非法操作:index
++
++[ 2016-05-17T16:10:12+08:00 ] ::1 /api/android/LoginvCode
++ERR: 非法操作:LoginvCode
++
++[ 2016-05-17T16:10:24+08:00 ] ::1 /api/android/Loginvcode
++ERR: 非法操作:Loginvcode
++
++[ 2016-05-17T16:10:38+08:00 ] ::1 /api/android/loginvcode
++ERR: 非法操作:loginvcode
++
++[ 2016-05-17T16:11:17+08:00 ] ::1 /api/android/vcode
++ERR: 非法操作:vcode
++
++[ 2016-05-17T16:11:20+08:00 ] ::1 /api/android/vcode
++ERR: 非法操作:vcode
++
++[ 2016-05-17T16:12:22+08:00 ] ::1 /api/android/Login_vCode
++ERR: 非法操作:Login_vCode
++
++[ 2016-05-17T16:12:35+08:00 ] ::1 /api/android/LoginVcode
++ERR: 非法操作:LoginVcode
++
++[ 2016-05-17T16:13:25+08:00 ] ::1 /api/android/LoginVcode
++ERR: 非法操作:LoginVcode
++
++[ 2016-05-17T16:18:28+08:00 ] 127.0.0.1 /api/android/user/register_by_mail/mail_send
++ERR: 非法操作:RegisterActivateMailSend
++
++[ 2016-05-17T16:54:28+08:00 ] ::1 /api/android/
++ERR: 非法操作:index
++
++[ 2016-05-17T16:54:54+08:00 ] ::1 /api/android/
++ERR: 非法操作:index
++
++[ 2016-05-17T16:55:02+08:00 ] ::1 /api/android/user/phone_is_register?phone=13132283239
++ERR: 非法操作:user
++
++[ 2016-05-17T16:55:58+08:00 ] ::1 /api/android/userTelExist
++ERR: 非法操作:userTelExist
++
++[ 2016-05-17T16:58:41+08:00 ] ::1 /api/android/userTelExist
++ERR: 非法操作:userTelExist
++
++[ 2016-05-17T16:58:44+08:00 ] ::1 /api/android/userTelExist
++ERR: 非法操作:userTelExist
++
++[ 2016-05-17T16:58:45+08:00 ] ::1 /api/android/userTelExist
++ERR: 非法操作:userTelExist
++
++[ 2016-05-17T16:58:57+08:00 ] ::1 /api/android/userTelExist
++ERR: 非法操作:userTelExist
++
++[ 2016-05-17T16:58:58+08:00 ] ::1 /api/android/userTelExist
++ERR: 非法操作:userTelExist
++
++[ 2016-05-17T16:59:22+08:00 ] ::1 /api/android/userTelExist
++ERR: 非法操作:userTelExist
++
++[ 2016-05-17T16:59:23+08:00 ] ::1 /api/android/userTelExist
++ERR: 非法操作:userTelExist
++
++[ 2016-05-17T16:59:23+08:00 ] ::1 /api/android/userTelExist
++ERR: 非法操作:userTelExist
++
++[ 2016-05-17T17:00:03+08:00 ] ::1 /api/android/userTelExist
++ERR: 非法操作:userTelExist
++
++[ 2016-05-17T17:00:04+08:00 ] ::1 /api/android/userTelExist
++ERR: 非法操作:userTelExist
++
++[ 2016-05-17T17:00:06+08:00 ] ::1 /api/android/userTelExist
++ERR: 非法操作:userTelExist
++
++[ 2016-05-17T17:00:32+08:00 ] ::1 /api/android/usertelExist
++ERR: 非法操作:usertelExist
++
++[ 2016-05-17T17:00:39+08:00 ] ::1 /api/android/usertelexist
++ERR: 非法操作:usertelexist
++
++[ 2016-05-17T17:21:42+08:00 ] ::1 /api/android/userTelExist
++ERR: 非法操作:userTelExist
++
++[ 2016-05-17T17:25:24+08:00 ] ::1 /api/android/userTelExist_html
++ERR: 非法操作:userTelExist_html
++
++[ 2016-05-17T17:28:22+08:00 ] ::1 /api/android/read
++ERR: 非法操作:read
++
++[ 2016-05-17T17:28:47+08:00 ] ::1 /api/android/read
++ERR: 非法操作:read
++
++[ 2016-05-17T17:28:52+08:00 ] ::1 /api/android/read
++ERR: 非法操作:read
++
++[ 2016-05-17T17:28:54+08:00 ] ::1 /api/android/read
++ERR: 非法操作:read
++
++[ 2016-05-17T17:29:01+08:00 ] ::1 /api/android/read_get
++ERR: 非法操作:read_get
++
++[ 2016-05-17T17:30:07+08:00 ] ::1 /api/android/read_get
++ERR: 非法操作:read_get
++
++[ 2016-05-17T17:30:11+08:00 ] ::1 /api/android/read
++ERR: 非法操作:read
++
++[ 2016-05-17T17:34:01+08:00 ] ::1 /api/android/read
++ERR: 非法操作:read
++
++[ 2016-05-17T17:34:09+08:00 ] ::1 /api/android/userTelExist
++ERR: 非法操作:userTelExist
++
++[ 2016-05-17T17:35:06+08:00 ] 127.0.0.1 /api/android/
++ERR: 非法操作:index
++
++[ 2016-05-17T17:35:12+08:00 ] 127.0.0.1 /api/android/userExist
++ERR: 非法操作:userExist
++
++[ 2016-05-17T17:35:32+08:00 ] 127.0.0.1 /api/android/userNameExist
++ERR: 非法操作:userNameExist
++
++[ 2016-05-17T17:36:05+08:00 ] ::1 /api/android/userNameExist
++ERR: 非法操作:userNameExist
++
++[ 2016-05-17T20:18:12+08:00 ] ::1 /api/android/read
++ERR: 非法操作:read
++
++[ 2016-05-17T20:18:18+08:00 ] ::1 /api/android/read_get
++ERR: 非法操作:read_get
++
++[ 2016-05-17T20:20:12+08:00 ] ::1 /api/android/read
++ERR: 非法操作:read
++
++[ 2016-05-17T20:20:42+08:00 ] ::1 /api/android/read
++ERR: 非法操作:read
++
++[ 2016-05-17T20:21:22+08:00 ] ::1 /api/android/wechat
++ERR: 非法操作:wechat
++
++[ 2016-05-17T20:21:29+08:00 ] ::1 /api/android/read
++ERR: 非法操作:read
++
++[ 2016-05-17T20:22:12+08:00 ] ::1 /api/android/read
++ERR: 非法操作:read
++
++[ 2016-05-17T20:23:47+08:00 ] ::1 /api/wechat/read
++ERR: 非法操作:read
++
++[ 2016-05-17T20:30:20+08:00 ] ::1 /api/wechat/read
++ERR: 非法操作:read
++
++[ 2016-05-17T20:30:35+08:00 ] ::1 /api/wechat/read
++ERR: 非法操作:read
++
++[ 2016-05-17T20:30:39+08:00 ] ::1 /api/wechat/read
++ERR: 非法操作:read
++
++[ 2016-05-17T20:31:41+08:00 ] ::1 /api/wechat/read
++ERR: 非法操作:read
++
++[ 2016-05-17T20:31:43+08:00 ] ::1 /api/wechat/read
++ERR: 非法操作:read
++
++[ 2016-05-17T20:31:46+08:00 ] ::1 /api/wechat/read
++ERR: 非法操作:read
++
++[ 2016-05-17T20:32:59+08:00 ] ::1 /api/wechat/read
++ERR: 非法操作:read
++
++[ 2016-05-17T20:33:27+08:00 ] ::1 /api/wechat/read
++ERR: 非法操作:read
++
++[ 2016-05-17T20:33:28+08:00 ] ::1 /api/wechat/read
++ERR: 非法操作:read
++
++[ 2016-05-17T20:43:35+08:00 ] ::1 /api/wechat/read
++ERR: 非法操作:read
++
++[ 2016-05-17T20:43:51+08:00 ] ::1 /api/wechat/read
++ERR: 非法操作:read
++
++[ 2016-05-17T20:45:38+08:00 ] ::1 /api/wechat/read
++ERR: 非法操作:read
++
++[ 2016-05-17T20:45:52+08:00 ] ::1 /api/wechat/read
++ERR: 非法操作:read
++
++[ 2016-05-17T20:47:23+08:00 ] ::1 /api/wechat/read
++ERR: 非法操作:read
++
++[ 2016-05-17T21:44:38+08:00 ] ::1 /api/android/user/register_by_mail
++ERR: 非法操作:user
++
++[ 2016-05-17T21:51:42+08:00 ] ::1 /api/wechat/read
++ERR: 非法操作:read
++
++[ 2016-05-17T22:00:42+08:00 ] ::1 /api/android/user/register_by_mail/activate
++ERR: 非法操作:RegisterMailActivate
++
++[ 2016-05-17T22:01:15+08:00 ] ::1 /api/android/user/register_by_mail/activate
++ERR: 非法操作:RegisterMailActivate
++
++[ 2016-05-17T22:02:21+08:00 ] ::1 /api/android/user/register_by_mail/activate
++ERR: 非法操作:RegisterMailActivate
++
++[ 2016-05-17T22:02:59+08:00 ] ::1 /api/android/user/register_by_mail/activate
++ERR: 非法操作:RegisterMailActivate
++
++[ 2016-05-17T22:03:17+08:00 ] ::1 /api/android/user/register_by_mail/activate
++ERR: 非法操作:RegisterMailActivate
++
++[ 2016-05-17T22:10:15+08:00 ] ::1 /api/android/user/mail_is_register?email=2574580419@qq.com
++ERR: 非法操作:userEmailExist
++
++[ 2016-05-17T22:10:36+08:00 ] ::1 /api/android/user/mail_is_register?email=2574580419@qq.com
++ERR: 非法操作:userEmailExist
++
++[ 2016-05-17T22:11:11+08:00 ] ::1 /api/android/user/mail_is_register?email=2574580419@qq.com
++ERR: 非法操作:userEmailExist
++
++[ 2016-05-17T22:11:22+08:00 ] ::1 /api/android/user/mail_is_register?email=2574580419@qq.com
++ERR: 非法操作:userEmailExist
++
++[ 2016-05-17T22:11:47+08:00 ] ::1 /api/android/user/mail_is_register?email=2574580419@qq.com
++ERR: 非法操作:userEmailExist
++
++[ 2016-05-17T22:12:18+08:00 ] ::1 /api/android/user/phone_is_register?phone=13132283239
++ERR: 非法操作:userTelExist
++
++[ 2016-05-17T22:13:02+08:00 ] ::1 /api/android/user/phone_is_register?phone=13132283239
++ERR: 非法操作:userTelExist
++
++[ 2016-05-17T22:13:59+08:00 ] ::1 /api/android/user/phone_is_register?phone=13132283239
++ERR: 非法操作:userTelExist
++
++[ 2016-05-17T22:14:23+08:00 ] ::1 /api/android/user/phone_is_register?phone=13132283239
++ERR: 非法操作:userTelExist
++
++[ 2016-05-17T22:15:28+08:00 ] ::1 /api/android/user/phone_is_register?phone=13132283239
++ERR: 非法操作:userTelExist
++
++[ 2016-05-17T22:22:49+08:00 ] ::1 /api/android/user/phone_is_register?phone=13132283239
++ERR: 非法操作:userTelExist
++
++[ 2016-05-17T22:23:19+08:00 ] ::1 /api/android/user/phone_is_register?phone=13132283239
++ERR: 非法操作:userTelExist
++
++[ 2016-05-17T22:23:55+08:00 ] ::1 /api/android/user/phone_is_register?phone=13132283239
++ERR: 非法操作:userTelExist
++
++[ 2016-05-17T22:24:37+08:00 ] ::1 /api/android/user/phone_is_register?phone=13132283239
++ERR: 非法操作:userTelExist
++
++[ 2016-05-17T22:25:02+08:00 ] ::1 /api/android/user/phone_is_register
++ERR: 非法操作:userTelExist
++
++[ 2016-05-17T22:25:23+08:00 ] ::1 /api/android/user/phone_is_register
++ERR: 非法操作:userTelExist
++
++[ 2016-05-17T22:25:25+08:00 ] ::1 /api/android/user/phone_is_register
++ERR: 非法操作:userTelExist
++
++[ 2016-05-17T22:25:25+08:00 ] ::1 /api/android/user/phone_is_register
++ERR: 非法操作:userTelExist
++
++[ 2016-05-17T22:25:33+08:00 ] ::1 /api/android/user/phone_is_register
++ERR: 非法操作:userTelExist
++
++[ 2016-05-17T22:25:35+08:00 ] ::1 /api/android/user/phone_is_register
++ERR: 非法操作:userTelExist
++
++[ 2016-05-17T22:28:44+08:00 ] ::1 /api/android/user/phone_is_register
++ERR: 非法操作:userTelExist
++
++[ 2016-05-17T22:28:54+08:00 ] ::1 /api/android/user/phone_is_register
++ERR: 非法操作:userTelExist
++
++[ 2016-05-17T22:29:35+08:00 ] ::1 /api/android/user/phone_is_register
++ERR: 非法操作:userTelExist
++
++[ 2016-05-17T22:30:49+08:00 ] ::1 /api/android/user/phone_is_register
++ERR: 非法操作:userTelExist
++
++[ 2016-05-17T22:31:22+08:00 ] ::1 /api/android/user/phone_is_register?phone=13640140644
++ERR: 非法操作:userTelExist
++
++[ 2016-05-17T22:31:56+08:00 ] ::1 /api/android/user/phone_is_register.html?phone=13640140644
++ERR: 非法操作:userTelExist
++
++[ 2016-05-17T22:32:46+08:00 ] ::1 /api/android/user/phone_is_register.html
++ERR: 非法操作:userTelExist
++
++[ 2016-05-17T22:34:09+08:00 ] ::1 /api/android/user/is_phone_register
++ERR: 非法操作:user
++
++[ 2016-05-17T22:34:37+08:00 ] ::1 /api/android/user/phone_is_register.html
++ERR: 非法操作:userTelExist
++
++[ 2016-05-17T22:35:14+08:00 ] ::1 /api/android/user/phone_is_register.html
++ERR: 非法操作:userTelExist
++
++[ 2016-05-17T22:36:00+08:00 ] ::1 /api/android/user/phone_is_register.html
++ERR: 非法操作:userTelExist
++
++[ 2016-05-17T22:36:17+08:00 ] ::1 /api/android/user/phone_is_register.html
++ERR: 非法操作:userTelExist
++
++[ 2016-05-17T22:36:35+08:00 ] ::1 /api/android/user/phone_is_register
++ERR: 非法操作:userTelExist
++
++[ 2016-05-17T22:36:49+08:00 ] ::1 /api/android/user/phone_is_register
++ERR: 非法操作:userTelExist
++
++[ 2016-05-17T22:37:15+08:00 ] ::1 /api/android/user/is_phone_register
++ERR: 非法操作:user
++
++[ 2016-05-17T22:38:34+08:00 ] ::1 /api/android/user/is_phone_register
++ERR: 非法操作:user
++
+diff --git a/application/Runtime/Logs/Api/16_05_18.log b/application/Runtime/Logs/Api/16_05_18.log
+new file mode 100644
+index 0000000..b05f6d4
+--- /dev/null
++++ b/application/Runtime/Logs/Api/16_05_18.log
+@@ -0,0 +1,21 @@
++[ 2016-05-18T10:43:27+08:00 ] ::1 /api/android/user/register_by_mail/activate?a=_41a20e3249ad74d401cafacef07c5c6c&k=9f4016408e8a6c1bddb95a015049a50c
++ERR: 非法操作:_41a20e3249ad74d401cafacef07c5c6c
++
++[ 2016-05-18T10:43:37+08:00 ] ::1 /api/android/user/register_by_mail/activate?a=_41a20e3249ad74d401cafacef07c5c6c&k=9f4016408e8a6c1bddb95a015049a50c
++ERR: 非法操作:_41a20e3249ad74d401cafacef07c5c6c
++
++[ 2016-05-18T10:43:46+08:00 ] ::1 /api/android/user/register_by_mail/activate?a=_41a20e3249ad74d401cafacef07c5c6c&k=9f4016408e8a6c1bddb95a015049a50c
++ERR: 非法操作:_41a20e3249ad74d401cafacef07c5c6c
++
++[ 2016-05-18T11:47:22+08:00 ] ::1 /api/android/user/register_by_mail/activate?ac=41a20e3249ad74d401cafacef07c5c6c&k=9f4016408e8a6c1bddb95a015049a50c
++ERR: SQLSTATE[HY000]: General error: 1267 Illegal mix of collations (gbk_chinese_ci,IMPLICIT) and (utf8_general_ci,COERCIBLE) for operation '='
++
++[ 2016-05-18T11:49:55+08:00 ] ::1 /api/android/user/register_by_mail/activate?ac=41a20e3249ad74d401cafacef07c5c6c&k=9f4016408e8a6c1bddb95a015049a50c
++ERR: SQLSTATE[HY000]: General error: 1267 Illegal mix of collations (gbk_chinese_ci,IMPLICIT) and (utf8_general_ci,COERCIBLE) for operation '='
++
++[ 2016-05-18T13:02:52+08:00 ] ::1 /api/android/user/register_by_phone/send_msg
++ERR: 非法操作:register_by_phone
++
++[ 2016-05-18T13:11:08+08:00 ] ::1 /api/android/user/register_by_phone/send_msg
++ERR: 非法操作:register_by_phone
++
+diff --git a/application/Runtime/Logs/Common/16_05_16.log b/application/Runtime/Logs/Common/16_05_16.log
+new file mode 100644
+index 0000000..06b4c11
+--- /dev/null
++++ b/application/Runtime/Logs/Common/16_05_16.log
+@@ -0,0 +1,6 @@
++[ 2016-05-16T19:00:16+08:00 ] 192.168.31.126 /favicon.ico
++ERR: 无法加载模块:Favicon
++
++[ 2016-05-16T22:15:15+08:00 ] ::1 /favicon.ico
++ERR: 无法加载模块:Favicon
++
+diff --git a/application/Runtime/Logs/Common/16_05_17.log b/application/Runtime/Logs/Common/16_05_17.log
+new file mode 100644
+index 0000000..d042cec
+--- /dev/null
++++ b/application/Runtime/Logs/Common/16_05_17.log
+@@ -0,0 +1,18 @@
++[ 2016-05-17T11:16:36+08:00 ] ::1 /favicon.ico
++ERR: 无法加载模块:Favicon
++
++[ 2016-05-17T11:17:23+08:00 ] ::1 /favicon.ico
++ERR: 无法加载模块:Favicon
++
++[ 2016-05-17T11:18:19+08:00 ] ::1 /favicon.ico
++ERR: 无法加载模块:Favicon
++
++[ 2016-05-17T11:18:20+08:00 ] ::1 /favicon.ico
++ERR: 无法加载模块:Favicon
++
++[ 2016-05-17T12:27:56+08:00 ] ::1 /favicon.ico
++ERR: 无法加载模块:Favicon
++
++[ 2016-05-17T13:27:37+08:00 ] 127.0.0.1 /favicon.ico
++ERR: 无法加载模块:Favicon
++
+diff --git a/application/Runtime/Logs/Common/16_05_18.log b/application/Runtime/Logs/Common/16_05_18.log
+new file mode 100644
+index 0000000..1e88f57
+--- /dev/null
++++ b/application/Runtime/Logs/Common/16_05_18.log
+@@ -0,0 +1,6 @@
++[ 2016-05-18T09:58:19+08:00 ] ::1 /favicon.ico
++ERR: 无法加载模块:Favicon
++
++[ 2016-05-18T11:59:01+08:00 ] 127.0.0.1 /baltimoreroot
++ERR: 无法加载模块:Baltimoreroot
++
+diff --git a/application/Runtime/Logs/index.html b/application/Runtime/Logs/index.html
+deleted file mode 100644
+index 0519ecb..0000000
+--- a/application/Runtime/Logs/index.html
++++ /dev/null
+@@ -1 +0,0 @@
+- 
+\ No newline at end of file
+diff --git a/task_one.todo b/task_one.todo
+index 0a758d9..8d960e2 100644
+--- a/task_one.todo
++++ b/task_one.todo
+@@ -2,4 +2,6 @@
+ @TODO 看完composer中文文档中关于架构和资源库的相关介绍
+ @完成数据库模型的相关更新
+ @完善 htmlParse类,实现真正的变量参数传递
+-@美化邮箱注册模板
+\ No newline at end of file
++@美化邮箱注册模板
++@TODO  数据库编码问题bug
++@TODO  路由问题
+\ No newline at end of file
+warning: LF will be replaced by CRLF in application/Core/Controller/UserController.class.php.
+The file will have its original line endings in your working directory.
