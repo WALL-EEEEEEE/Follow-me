@@ -4,10 +4,12 @@
      use Think\Controller\RestController;
      use Api\baseApi\Api;
      use Core\Controller\UserController;
+     
 
 /**
  *   Android 客户端请求处理器
  */
+
 class AndroidController extends RestController
 {
     const  SERVICES_NO_EXISTES = -1;
@@ -71,6 +73,7 @@ class AndroidController extends RestController
 
     }
 
+    
     public function RegisterMailActivate_get_xml()
     {
         $user = new UserController;
@@ -83,6 +86,9 @@ class AndroidController extends RestController
 
         return $this->response($this->response_data, 'json');
 
+        
+
+
 
     }
 
@@ -93,6 +99,8 @@ class AndroidController extends RestController
      * @param   post  [user_name,user_pwd,mail]
      * @return  json  {"statusCode": "", "statusInfo": "", "content"   : "" }
      */
+    
+    
     public function register_by_mail_post()
     {
         $user = new UserController;
