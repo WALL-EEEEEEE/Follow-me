@@ -1,3 +1,0 @@
-never mind to the test!"just for test 1" 
-"\njust for test 2" 
-\njust for test 3 

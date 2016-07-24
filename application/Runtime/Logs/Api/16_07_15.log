@@ -1,0 +1,9 @@
+[ 2016-07-15T11:37:32+08:00 ] 127.0.0.1 /api/android/user/register_by_mail
+ERR: SQLSTATE[42000] [1049] Unknown database 'follow_me'
+
+[ 2016-07-15T12:15:14+08:00 ] 127.0.0.1 /api/android/user/register_by_mail
+ERR: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'follow_me.register_type' doesn't exist
+
+[ 2016-07-15T12:16:12+08:00 ] 127.0.0.1 /api/android/user/register_by_mail
+ERR: 非法操作:register_by_mail
+

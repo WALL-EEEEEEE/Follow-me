@@ -199,12 +199,12 @@ class UserController extends Controller
         $u_check_mail = trim($u_check_mail);
         $u_check_phone = trim($u_check_phone);
 
-        //邮箱登陆,邮箱不能为空
+        //邮箱注册,邮箱不能为空
         if ($this->registerType[$register_type] == "mail" && empty($u_check_mail)) {
                return self::REG_EMAIL_EMPTY;
         }
 
-        //手机登陆,手机号不能为空
+        //手机注册,手机号不能为空
         if ($this->registerType[$register_type] == "telephone" && empty($u_check_phone)) {
                return self::REG_PHONE_EMPTY;
         }
@@ -671,7 +671,6 @@ class UserController extends Controller
     {
         $user = new UserModel();
         $check_res = $user->mailRegistered($email);
-
         return $check_res;
     }
 
